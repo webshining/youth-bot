@@ -1,3 +1,5 @@
+import asyncio
+
 from app.handlers import setup_handlers
 from app.middlewares import setup_middlewares
 from loader import bot, dp
@@ -15,11 +17,11 @@ async def on_shutdown() -> None:
     logger.info("Bot stopped!")
 
 
-def main() -> None:
+async def main() -> None:
     dp.startup.register(on_startup)
     dp.shutdown.register(on_shutdown)
-    dp.run_polling(bot)
+    await dp.start_polling(bot)
 
 
 if __name__ == '__main__':
-    main()
+    asyncio.run(main())

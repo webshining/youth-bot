@@ -50,8 +50,10 @@ async def _lists_call(call: CallbackQuery, state: FSMContext):
 
 
 @router.callback_query(lambda call: call.data.startswith("list"))
-async def _list_call(call: CallbackQuery, state: FSMContext):
+async def _list_call(call: CallbackQuery):
     if call.data[5:].startswith("delete"):
+        async with get_session() as session:
+            await List.delete(session, call.data[12:])
         text, markup = await _get_lists_data()
         await call.message.edit_text(_("Success"), reply_markup=markup)
     await call.answer(call.data)

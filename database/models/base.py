@@ -52,7 +52,13 @@ class BaseModel(Base):
 
     @classmethod
     async def delete(cls, session: AsyncSession, id: int):
-        pass
+        obj = await cls.get(session, id)
+        if obj:
+            await session.delete(obj)
+            await session.flush()
+            session.expunge_all()
+            return True
+        return False
 
 
 @asynccontextmanager
