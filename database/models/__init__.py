@@ -1,2 +1,2 @@
 from .base import get_session
-from .user import User
+from .user import User, List

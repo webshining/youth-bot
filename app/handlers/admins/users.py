@@ -16,11 +16,17 @@ async def _users(message: Message):
 async def _get_users_data():
     async with get_session() as session:
         users = await User.get_all(session)
-    if not users:
-        return _('Users is empty🫡'), None
-    text = ''
-    for user in users:
-        text += f'\n{"--" * 15}'
-        for key, value in user.to_dict().items():
-            text += f'\n|{key}: <b>{value}</b>'
+    text = _get_users_text(users)
     return text, None
+
+
+def _get_users_text(users: list[User]) -> str:
+    if not users:
+        text = _('Users is empty🫡')
+    else:
+        text = ''
+        for user in users:
+            text += f'\n{"--" * 15}'
+            for key, value in user.to_dict().items():
+                text += f'\n|{key}: <b>{value}</b>'
+    return text

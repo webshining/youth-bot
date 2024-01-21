@@ -50,6 +50,10 @@ class BaseModel(Base):
         session.expunge_all()
         return obj
 
+    @classmethod
+    async def delete(cls, session: AsyncSession, id: int):
+        pass
+
 
 @asynccontextmanager
 async def get_session() -> AsyncSession:
