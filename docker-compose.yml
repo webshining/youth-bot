@@ -7,6 +7,14 @@ services:
     depends_on:
       - redis
       - mongo
+    environment:
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      RD_DB: ${RD_DB:-5}
+      RD_HOST: ${RD_HOST:-redis}
+      RD_PORT: ${RD_PORT:-6379}
+      MONGO_URL: ${MONGO_URL:-mongodb://mongo:27017}
+    entrypoint:
+      - ./bin/entrypoint.sh
   redis:
     image: redis:alpine
     restart: unless-stopped
@@ -15,6 +23,8 @@ services:
     restart: unless-stopped
     volumes:
       - mongo_db:/data/db
+    ports:
+      - "27017:27017"
 
 volumes:
   mongo_db:

@@ -19,9 +19,9 @@ class List(Base):
     _rules: list[str] = ["read", "edit", "delete", "send"]
 
     def rules(self, user: User) -> list[str]:
-        _user = next((i for i in self.users if i.user.id == user.id), None)
         if user.status in ("admin", "super_admin"):
             return self._rules
+        _user = next((i for i in self.users if i.user.id == user.id), None)
         if not _user:
             return []
         return _user.rules

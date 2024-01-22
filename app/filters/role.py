@@ -9,9 +9,8 @@ class ListRoleFilter(Filter):
     async def __call__(self, call: CallbackQuery, **data) -> bool:
         user = data['user']
         action, list_id = call.data.split("_")[-2:]
-        if user.status == "admin":
+        if user.status in ("admin", "super_admin"):
             _is = True
-            await data['state'].update_data(rules=["delete", "edit", "send"])
         elif not list_id.isnumeric():
             _is = True
         elif (item := await List.get(int(list_id))) is not None:

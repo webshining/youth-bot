@@ -31,7 +31,8 @@ async def notify():
 
 
 async def on_startup() -> None:
-    await Config.create()
+    if not await Config.get(1):
+        await Config.create()
     await set_default_commands()
     scheduler = AsyncIOScheduler()
     # scheduler.add_job(notify, 'interval', seconds=5)
