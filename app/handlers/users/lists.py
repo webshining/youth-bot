@@ -1,3 +1,4 @@
+from aiogram import html, F
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, CallbackQuery
@@ -39,7 +40,7 @@ async def _list(call: CallbackQuery, state: FSMContext, user: User):
     else:
         if (item := await List.get(int(call.data.split("_")[-1]))) is not None:
             if call.data[5:].startswith('delete'):
-                text, markup = (_("Do you really want to delete the list <b>{}</b>?").format(item.name),
+                text, markup = (_("Do you really want to delete the list <b>{}</b>?").format(html.quote(item.name)),
                                 get_apply_markup("apply", "list", "delete", item.id))
                 await call.message.edit_text(text, reply_markup=markup)
             elif call.data[5:].startswith('edit'):
@@ -75,7 +76,10 @@ async def _list_apply(call: CallbackQuery, state: FSMContext, user: User):
         elif call.data[11:].startswith("send"):
             for i in item.users:
                 if i.user.id != call.from_user.id:
-                    await call.message.copy_to(chat_id=i.user.id, reply_markup=None)
+                    try:
+                        await call.message.copy_to(chat_id=i.user.id, reply_markup=None)
+                    except:
+                        pass
 
             text, markup = await _get_lists_data(user.is_admin())
             await call.message.delete()
@@ -105,13 +109,14 @@ async def _list_send(message: Message, state: FSMContext, user: User):
     await state.set_state(None)
 
 
-@router.message(ListState.edit_name)
+@router.message(ListState.edit_name, F.text)
 async def _list_edit(message: Message, state: FSMContext, user: User):
     data = await state.get_data()
     if (list_id := data.get('list_id')) is not None and (item := await List.get(int(list_id))) is not None:
         text, markup = (
-            _("Do you really want to change the list name from <b>{}</b> to <b>{}</b>?").format(item.name,
-                                                                                                message.text),
+            _("Do you really want to change the list name from <b>{}</b> to <b>{}</b>?").format(html.quote(item.name),
+                                                                                                html.quote(
+                                                                                                    message.text)),
             get_apply_markup("apply", "list", "edit", list_id))
         await state.update_data(list_name=message.text)
     else:
@@ -125,7 +130,7 @@ async def _get_list_data(list: List | None, user: User):
     if not list:
         text, markup = await _get_lists_data(user.is_admin())
     else:
-        text = f"<b>{list.name}:</b>"
+        text = f"<b>{html.quote(list.name)}:</b>"
         text += _get_users_text([u.user for u in list.users])
         markup = get_list_markup(list.id, list.rules(user))
     return text, markup

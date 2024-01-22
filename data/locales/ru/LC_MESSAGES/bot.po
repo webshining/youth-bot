@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-01-22 05:05+0200\n"
+"POT-Creation-Date: 2024-01-22 22:09+0200\n"
 "PO-Revision-Date: 2023-09-26 01:25+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -39,19 +39,19 @@ msgstr "отменить"
 msgid "change language"
 msgstr "изменить язык"
 
-#: app/filters/admin.py:16 app/filters/role.py:22
+#: app/filters/admin.py:16 app/filters/role.py:21
 msgid "Not enough rights🚫"
 msgstr "Не достаточно прав🚫"
 
-#: app/handlers/admins/lists.py:13
+#: app/handlers/admins/lists.py:14
 msgid "Enter list name:"
 msgstr "Введите имя списка:"
 
-#: app/handlers/admins/users.py:18
+#: app/handlers/admins/users.py:17
 msgid "<b>Users:</b>"
 msgstr "<b>Пользователи:</b>"
 
-#: app/handlers/admins/users.py:24
+#: app/handlers/admins/users.py:35
 msgid "Users is empty🫡"
 msgstr "Пользователей нет🫡"
 
@@ -63,27 +63,27 @@ msgstr "Выберите язык:"
 msgid "Success"
 msgstr "Готово"
 
-#: app/handlers/users/lists.py:42
+#: app/handlers/users/lists.py:43
 msgid "Do you really want to delete the list <b>{}</b>?"
 msgstr "Действительно ли вы хотите удалить список <b>{}</b>?"
 
-#: app/handlers/users/lists.py:46
+#: app/handlers/users/lists.py:47
 msgid "Enter new name:"
 msgstr "Введите новое имя:"
 
-#: app/handlers/users/lists.py:49
+#: app/handlers/users/lists.py:50
 msgid "Enter message text:"
 msgstr "Введите текст сообщения:"
 
-#: app/handlers/users/lists.py:113
+#: app/handlers/users/lists.py:117
 msgid "Do you really want to change the list name from <b>{}</b> to <b>{}</b>?"
 msgstr "Действительно ли вы хотите изменить имя списка с <b>{}</b> на <b>{}</b>?"
 
-#: app/handlers/users/lists.py:135
+#: app/handlers/users/lists.py:140
 msgid "Select list:"
 msgstr "Выберите список:"
 
-#: app/handlers/users/start.py:10
+#: app/handlers/users/start.py:11
 msgid "Hello <b>{}</b>"
 msgstr "Привет <b>{}</b>"
 

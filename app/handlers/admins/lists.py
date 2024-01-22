@@ -1,3 +1,4 @@
+from aiogram import F
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message
 
@@ -15,7 +16,7 @@ async def _lists_call_create(call: CallbackQuery, state: FSMContext):
     await call.message.edit_text(text, reply_markup=markup)
 
 
-@router.message(ListState.create_name)
+@router.message(ListState.create_name, F.text)
 async def _lists_create(message: Message, state: FSMContext, user: User):
     await List.create(name=message.text)
     text, markup = await _get_lists_data(user.is_admin())

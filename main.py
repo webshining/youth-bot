@@ -2,7 +2,6 @@ import asyncio
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-from app.commands import set_default_commands
 from app.handlers import setup_handlers
 from app.middlewares import setup_middlewares
 from database.models import Config, List
@@ -33,7 +32,7 @@ async def notify():
 async def on_startup() -> None:
     if not await Config.get(1):
         await Config.create()
-    await set_default_commands()
+    # await set_default_commands()
     scheduler = AsyncIOScheduler()
     # scheduler.add_job(notify, 'interval', seconds=5)
     # scheduler.start()

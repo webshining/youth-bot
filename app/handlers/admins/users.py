@@ -1,5 +1,9 @@
+import csv
+import io
+
+from aiogram import html
 from aiogram.filters import Command
-from aiogram.types import Message
+from aiogram.types import Message, BufferedInputFile
 
 from app.filters import AdminFilter
 from app.routers import admin_router as router
@@ -9,15 +13,22 @@ from loader import _
 
 @router.message(Command('users'), AdminFilter(super=True))
 async def _users(message: Message):
-    text, markup = await _get_users_data()
-    await message.answer(text, reply_markup=markup)
+    text, file = await _get_users_data()
+    text = _("<b>Users:</b>") + text
+    await message.answer(text)
+    await message.answer_document(BufferedInputFile(file, 'users.csv'))
 
 
 async def _get_users_data():
-    users = await User.get_all()
-    text = _("<b>Users:</b>")
-    text += _get_users_text(users)
-    return text, None
+    file = io.StringIO()
+    writer = csv.writer(file)
+    writer.writerow(list(User.__annotations__.keys()))
+    for user in await User.get_all():
+        writer.writerow(list(user.dict().values()))
+    file.seek(0)
+    file = io.BytesIO(file.getvalue().encode())
+    file.seek(0)
+    return _get_users_text(await User.get_all()), file.getvalue()
 
 
 def _get_users_text(users: list[User]) -> str:
@@ -25,7 +36,5 @@ def _get_users_text(users: list[User]) -> str:
     if users:
         text = ''
         for user in users:
-            text += f'\n{"--" * 15}'
-            for key, value in user.dict().items():
-                text += f'\n|{key}: <b>{value}</b>'
+            text += f'\n|name: <b>{html.quote(str(user.name))}</b>'
     return text
