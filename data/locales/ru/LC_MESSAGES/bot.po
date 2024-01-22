@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-26 03:17+0300\n"
+"POT-Creation-Date: 2024-01-22 05:05+0200\n"
 "PO-Revision-Date: 2023-09-26 01:25+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -17,37 +17,109 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.12.1\n"
+"Generated-By: Babel 2.14.0\n"
 
-#: app/commands/admins.py:10
-msgid "get users list [admin]"
-msgstr ""
+#: main.py:23
+msgid "This week you pray for <b>{}</b>"
+msgstr "На этой неделе вы молитесь за <b>{}</b>"
 
 #: app/commands/default.py:8
 msgid "start chat"
-msgstr ""
+msgstr "начать"
 
 #: app/commands/default.py:9
+msgid "retrieve lists"
+msgstr "получить списки"
+
+#: app/commands/default.py:10
+msgid "cancel"
+msgstr "отменить"
+
+#: app/commands/default.py:11
 msgid "change language"
-msgstr ""
+msgstr "изменить язык"
 
-#: app/filters/status.py:20
+#: app/filters/admin.py:16 app/filters/role.py:22
 msgid "Not enough rights🚫"
-msgstr ""
+msgstr "Не достаточно прав🚫"
 
-#: app/handlers/admins/users.py:19
+#: app/handlers/admins/lists.py:13
+msgid "Enter list name:"
+msgstr "Введите имя списка:"
+
+#: app/handlers/admins/users.py:18
+msgid "<b>Users:</b>"
+msgstr "<b>Пользователи:</b>"
+
+#: app/handlers/admins/users.py:24
 msgid "Users is empty🫡"
-msgstr ""
+msgstr "Пользователей нет🫡"
 
 #: app/handlers/users/lang.py:12
 msgid "Select language:"
-msgstr ""
+msgstr "Выберите язык:"
 
 #: app/handlers/users/lang.py:18
-msgid "Language changed!"
-msgstr ""
+msgid "Success"
+msgstr "Готово"
+
+#: app/handlers/users/lists.py:42
+msgid "Do you really want to delete the list <b>{}</b>?"
+msgstr "Действительно ли вы хотите удалить список <b>{}</b>?"
+
+#: app/handlers/users/lists.py:46
+msgid "Enter new name:"
+msgstr "Введите новое имя:"
+
+#: app/handlers/users/lists.py:49
+msgid "Enter message text:"
+msgstr "Введите текст сообщения:"
+
+#: app/handlers/users/lists.py:113
+msgid "Do you really want to change the list name from <b>{}</b> to <b>{}</b>?"
+msgstr "Действительно ли вы хотите изменить имя списка с <b>{}</b> на <b>{}</b>?"
+
+#: app/handlers/users/lists.py:135
+msgid "Select list:"
+msgstr "Выберите список:"
 
 #: app/handlers/users/start.py:10
 msgid "Hello <b>{}</b>"
-msgstr ""
+msgstr "Привет <b>{}</b>"
+
+#: app/keyboards/lists.py:16
+msgid "➕ Create"
+msgstr "➕ Создать"
+
+#: app/keyboards/lists.py:17
+msgid "🔄 Refresh"
+msgstr "🔄 Обновить"
+
+#: app/keyboards/lists.py:26
+msgid "❌ Delete"
+msgstr "❌ Удалить"
+
+#: app/keyboards/lists.py:28
+msgid "✏️ Edit"
+msgstr "✏️ Изменить"
+
+#: app/keyboards/lists.py:32
+msgid "✍️ Send message"
+msgstr "✍️ Отправить сообщение"
+
+#: app/keyboards/lists.py:34
+msgid "⬅️ Back"
+msgstr "⬅️ Назад"
+
+#~ msgid "get users list [admin]"
+#~ msgstr ""
+
+#~ msgid "change language"
+#~ msgstr ""
+
+#~ msgid "Select language:"
+#~ msgstr ""
+
+#~ msgid "Language changed!"
+#~ msgstr ""
 

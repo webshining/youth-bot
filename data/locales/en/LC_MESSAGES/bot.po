@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-09-26 03:17+0300\n"
+"POT-Creation-Date: 2024-01-22 05:05+0200\n"
 "PO-Revision-Date: 2023-09-26 01:25+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -16,10 +16,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.12.1\n"
+"Generated-By: Babel 2.14.0\n"
 
-#: app/commands/admins.py:10
-msgid "get users list [admin]"
+#: main.py:23
+msgid "This week you pray for <b>{}</b>"
 msgstr ""
 
 #: app/commands/default.py:8
@@ -27,14 +27,30 @@ msgid "start chat"
 msgstr ""
 
 #: app/commands/default.py:9
+msgid "retrieve lists"
+msgstr ""
+
+#: app/commands/default.py:10
+msgid "cancel"
+msgstr ""
+
+#: app/commands/default.py:11
 msgid "change language"
 msgstr ""
 
-#: app/filters/status.py:20
+#: app/filters/admin.py:16 app/filters/role.py:22
 msgid "Not enough rights🚫"
 msgstr ""
 
-#: app/handlers/admins/users.py:19
+#: app/handlers/admins/lists.py:13
+msgid "Enter list name:"
+msgstr ""
+
+#: app/handlers/admins/users.py:18
+msgid "<b>Users:</b>"
+msgstr ""
+
+#: app/handlers/admins/users.py:24
 msgid "Users is empty🫡"
 msgstr ""
 
@@ -43,10 +59,69 @@ msgid "Select language:"
 msgstr ""
 
 #: app/handlers/users/lang.py:18
-msgid "Language changed!"
+msgid "Success"
+msgstr ""
+
+#: app/handlers/users/lists.py:42
+msgid "Do you really want to delete the list <b>{}</b>?"
+msgstr ""
+
+#: app/handlers/users/lists.py:46
+msgid "Enter new name:"
+msgstr ""
+
+#: app/handlers/users/lists.py:49
+msgid "Enter message text:"
+msgstr ""
+
+#: app/handlers/users/lists.py:113
+msgid "Do you really want to change the list name from <b>{}</b> to <b>{}</b>?"
+msgstr ""
+
+#: app/handlers/users/lists.py:135
+msgid "Select list:"
 msgstr ""
 
 #: app/handlers/users/start.py:10
 msgid "Hello <b>{}</b>"
 msgstr ""
+
+#: app/keyboards/lists.py:16
+msgid "➕ Create"
+msgstr ""
+
+#: app/keyboards/lists.py:17
+msgid "🔄 Refresh"
+msgstr ""
+
+#: app/keyboards/lists.py:26
+msgid "❌ Delete"
+msgstr ""
+
+#: app/keyboards/lists.py:28
+msgid "✏️ Edit"
+msgstr ""
+
+#: app/keyboards/lists.py:32
+msgid "✍️ Send message"
+msgstr ""
+
+#: app/keyboards/lists.py:34
+msgid "⬅️ Back"
+msgstr ""
+
+#~ msgid "get users list [admin]"
+#~ msgstr ""
+
+#~ msgid "change language"
+#~ msgstr ""
+
+#~ msgid "Select language:"
+#~ msgstr ""
+
+#~ msgid "Language changed!"
+#~ msgstr ""
+
+#~ msgid "get lists"
+#~ msgstr ""
 

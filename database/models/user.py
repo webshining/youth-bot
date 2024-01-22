@@ -10,6 +10,7 @@ class User(Base):
     name: str
     username: str | None
     status: str = Field(default="user")
+    lang: str
 
     _status: Status = Status
 
@@ -27,9 +28,9 @@ class User(Base):
     async def get_or_create(cls, id: int, **kwargs):
         user = await cls.get(id)
         if not user:
-            kwargs['id'] = id
+            kwargs['_id'] = id
             kwargs['status'] = "user"
-        user = await cls.update(id, **kwargs) if user else await cls.create(**kwargs)
+        user = user or await cls.create(**kwargs)
         return user
 
 

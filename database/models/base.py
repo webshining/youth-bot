@@ -40,9 +40,7 @@ class Base(BaseModel):
 
     @classmethod
     async def create(cls, **kwargs):
-        if 'id' in kwargs:
-            kwargs["_id"] = kwargs.pop("id")
-        else:
+        if '_id' not in kwargs:
             kwargs["_id"] = await cls.count() + 1
         obj = cls(**kwargs)
         obj = await cls._collection.insert_one(obj.model_dump(by_alias=True))

@@ -8,6 +8,7 @@ from .user import User
 class ListUser(BaseModel):
     user: User
     rules: list[str] = Field(default=[""])
+    num: int
 
 
 class List(Base):
@@ -34,7 +35,8 @@ class List(Base):
             {"$unwind": {"path": "$users.user", "preserveNullAndEmptyArrays": True}},
             {"$group": {"_id": "$_id", "users": {"$push": "$users"}, "name": {"$first": "$name"}}},
             {"$project": {"users": {"$cond": {"if": {"$eq": ["$users", [{}]]}, "then": [], "else": "$users"}},
-                          "name": "$name"}}
+                          "name": "$name"}},
+            {"$project": {"name": "$name", "users": {"$sortArray": {"input": "$users", "sortBy": {"num": 1}}}}}
         ]).to_list(length=1000)
         return cls(**obj[0]) if obj else None
 
@@ -46,7 +48,8 @@ class List(Base):
             {"$unwind": {"path": "$users.user", "preserveNullAndEmptyArrays": True}},
             {"$group": {"_id": "$_id", "users": {"$push": "$users"}, "name": {"$first": "$name"}}},
             {"$project": {"users": {"$cond": {"if": {"$eq": ["$users", [{}]]}, "then": [], "else": "$users"}},
-                          "name": "$name"}}
+                          "name": "$name"}},
+            {"$project": {"name": "$name", "users": {"$sortArray": {"input": "$users", "sortBy": {"num": 1}}}}}
         ]).to_list(length=1000)
         return [cls(**u) for u in objs]
 
