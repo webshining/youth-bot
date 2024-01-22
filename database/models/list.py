@@ -17,13 +17,13 @@ class List(Base):
 
     _rules: list[str] = ["read", "edit", "delete", "send"]
 
-    def rules(self, id: int) -> list[str]:
-        user = next((i for i in self.users if i.user.id == id), None)
-        if not user:
-            return []
-        if user.user.status in ("admin", "super_admin"):
+    def rules(self, user: User) -> list[str]:
+        _user = next((i for i in self.users if i.user.id == user.id), None)
+        if user.status in ("admin", "super_admin"):
             return self._rules
-        return user.rules
+        if not _user:
+            return []
+        return _user.rules
 
     @classmethod
     async def get(cls, id: int):

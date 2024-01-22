@@ -15,7 +15,7 @@ class ListRoleFilter(Filter):
         elif not list_id.isnumeric():
             _is = True
         elif (item := await List.get(int(list_id))) is not None:
-            _is = action in item.rules(user.id)
+            _is = action in item.rules(user)
         else:
             _is = False
         if not _is:

@@ -17,7 +17,7 @@ async def _lists(message: Message, user: User):
     await message.answer(text, reply_markup=markup)
 
 
-@router.callback_query(lambda call: call.data.startswith('lists'), ListRoleFilter())
+@router.callback_query(lambda call: call.data.startswith('lists') and call.data != "lists_create", ListRoleFilter())
 async def _lists_call(call: CallbackQuery, user: User):
     if call.data[6:] == 'refresh':
         text, markup = await _get_lists_data(user.is_admin())
@@ -32,7 +32,7 @@ async def _lists_call(call: CallbackQuery, user: User):
     await call.answer()
 
 
-@router.callback_query(lambda call: call.data.startswith('list'), ListRoleFilter())
+@router.callback_query(lambda call: call.data.startswith('list_'), ListRoleFilter())
 async def _list(call: CallbackQuery, state: FSMContext, user: User):
     if call.data[5:] == 'back':
         text, markup = await _get_lists_data(user.is_admin())
@@ -127,7 +127,7 @@ async def _get_list_data(list: List | None, user: User):
     else:
         text = f"<b>{list.name}:</b>"
         text += _get_users_text([u.user for u in list.users])
-        markup = get_list_markup(list.id, list.rules(user.id))
+        markup = get_list_markup(list.id, list.rules(user))
     return text, markup
 
 
