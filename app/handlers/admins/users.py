@@ -1,32 +1,31 @@
 from aiogram.filters import Command
 from aiogram.types import Message
 
-from app.filters import StatusFilter
+from app.filters import AdminFilter
 from app.routers import admin_router as router
-from database.models import User, get_session
+from database.models import User
 from loader import _
 
 
-@router.message(Command('users'), StatusFilter('super_admin'))
+@router.message(Command('users'), AdminFilter(super=True))
 async def _users(message: Message):
     text, markup = await _get_users_data()
     await message.answer(text, reply_markup=markup)
 
 
 async def _get_users_data():
-    async with get_session() as session:
-        users = await User.get_all(session)
-    text = _get_users_text(users)
+    users = await User.get_all()
+    text = _("<b>Users:</b>")
+    text += _get_users_text(users)
     return text, None
 
 
 def _get_users_text(users: list[User]) -> str:
-    if not users:
-        text = _('Users is empty🫡')
-    else:
+    text = "\n" + _('Users is empty🫡')
+    if users:
         text = ''
         for user in users:
             text += f'\n{"--" * 15}'
-            for key, value in user.to_dict().items():
+            for key, value in user.dict().items():
                 text += f'\n|{key}: <b>{value}</b>'
     return text

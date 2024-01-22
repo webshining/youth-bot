@@ -6,9 +6,8 @@
 
 - Aiogram
 - Redis
-- SQLAlchemy
-- SQLite3
-- PostgreSQL
+- Motor
+- MongoDB
 - i18n
 - Docker and docker compose
 
@@ -35,7 +34,6 @@
 $ git clone -b aiogram3 https://github.com/webshining/aiogram-mongo-template project_name
 $ cd project_name
 $ pip install -r requirements.txt
-$ poetry install # If you use poetry. Don't forget to select an interpreter
 ```
 
 ### Configure environment variables
@@ -68,21 +66,9 @@ $ cp .env.ren .env
 
 ### Database config
 
-> DB_URI format<br> > `dialect+driver://username:password@host:port/database`
+> MongoDB URL format<br> > `mongodb://[username:password@]host1[:port1][,...hostN[:portN]][/[defaultauthdb][?options]]`
 
-`DB_USER` - your database username
-
-`DB_PASS` - your database password
-
-`DB_NAME` - your database name
-
-`DB_HOST` - your database host
-
-`DB_PORT` - your database port
-
-> You can specify DB_URI instead of DB_USER, DB_PASS, DB_NAME, DB_HOST and DB_PORT
-
-`DB_URI` - connection url to your database server
+`MONGODB_URL` - connection url to your mongodb server
 
 ### Application start (local)
 

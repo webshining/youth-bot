@@ -1,68 +1,58 @@
-from contextlib import asynccontextmanager
-
-from sqlalchemy import and_, select
-from sqlalchemy.ext.asyncio import (AsyncAttrs, AsyncSession,
-                                    async_sessionmaker, create_async_engine)
-from sqlalchemy.orm import DeclarativeBase
-
-from data.config import DB_URI
-
-async_engine = create_async_engine(DB_URI)
-async_session = async_sessionmaker(async_engine, expire_on_commit=False)
+from bson.objectid import ObjectId as BsonObjectId
+from motor.motor_tornado import MotorCollection
+from pydantic import BaseModel
 
 
-class Base(AsyncAttrs, DeclarativeBase):
-    pass
-
-
-class BaseModel(Base):
-    __abstract__ = True
-
-    def to_dict(self):
-        return {c.key: getattr(self, c.key) for c in self.__table__.columns}
+class ObjectId(BsonObjectId):
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate
 
     @classmethod
-    async def get_all(cls, session: AsyncSession):
-        stmt = select(cls)
-        objs = (await session.scalars(stmt)).all()
-        session.expunge_all()
-        return objs
+    def validate(cls, v):
+        if not isinstance(v, BsonObjectId):
+            raise TypeError('ObjectId required')
+        return str(v)
+
+
+class Base(BaseModel):
+    _collection: MotorCollection = None
 
     @classmethod
-    async def get(cls, session: AsyncSession, id: int):
-        stmt = select(cls).where(cls.id == id)
-        obj = await session.scalar(stmt)
-        session.expunge_all()
-        return obj
+    async def count(cls):
+        num = await cls._collection.count_documents({})
+        return num
 
     @classmethod
-    async def get_by(cls, session: AsyncSession, **kwargs):
-        stmt = select(cls).where(and_(getattr(cls, k) == v for k, v in kwargs.items()))
-        obj = await session.scalar(stmt)
-        session.expunge_all()
-        return obj
+    async def get(cls, id: int):
+        obj = await cls._collection.find_one({'_id': id})
+        return cls(**obj) if obj else None
 
     @classmethod
-    async def create(cls, session: AsyncSession, **kwargs):
+    async def get_all(cls):
+        objs = cls._collection.find()
+        return [cls(**u) async for u in objs]
+
+    @classmethod
+    async def update(cls, id: int, **kwargs):
+        await cls._collection.find_one_and_update({'_id': id}, {'$set': kwargs})
+        return await cls.get(id)
+
+    @classmethod
+    async def create(cls, **kwargs):
+        if 'id' in kwargs:
+            kwargs["_id"] = kwargs.pop("id")
+        else:
+            kwargs["_id"] = await cls.count() + 1
         obj = cls(**kwargs)
-        session.add(obj)
-        await session.flush()
-        session.expunge_all()
-        return obj
+        obj = await cls._collection.insert_one(obj.model_dump(by_alias=True))
+        return await cls.get(obj.inserted_id)
 
     @classmethod
-    async def delete(cls, session: AsyncSession, id: int):
-        obj = await cls.get(session, id)
-        if obj:
-            await session.delete(obj)
-            await session.flush()
-            session.expunge_all()
-            return True
-        return False
+    async def delete(cls, id: int):
+        await cls._collection.find_one_and_delete({'_id': id})
+        return True
 
-
-@asynccontextmanager
-async def get_session() -> AsyncSession:
-    async with async_session() as session:
-        async with session.begin():
-            yield session
+    @classmethod
+    def set_collection(cls, collection: MotorCollection):
+        cls._collection = collection

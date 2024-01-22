@@ -6,6 +6,8 @@ from loader import _, bot, i18n
 def get_default_commands(lang: str = 'en'):
     commands = [
         BotCommand(command='/start', description=_('start chat', locale=lang)),
+        BotCommand(command='/lists', description=_('get lists', locale=lang)),
+        BotCommand(command='/cancel', description=_('cancel', locale=lang)),
     ]
 
     return commands

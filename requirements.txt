@@ -5,8 +5,7 @@ environs
 loguru
 
 # Database & storage
+motor
+tornado
+pydantic
 redis
-sqlalchemy[asyncio]
-aiosqlite
-asyncpg
-alembic
