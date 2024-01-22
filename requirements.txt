@@ -3,6 +3,7 @@ aiogram
 Babel
 environs
 loguru
+apscheduler
 
 # Database & storage
 motor
