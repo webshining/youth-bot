@@ -1,8 +1,16 @@
+from enum import Enum
+
 from pydantic import Field
 
 from loader import db
 from .base import Base
-from .status import Status
+
+
+class Status(Enum):
+    banned = 0
+    user = 1
+    admin = 2
+    super_admin = 3
 
 
 class User(Base):
@@ -27,13 +35,17 @@ class User(Base):
     @classmethod
     async def get_or_create(cls, id: int, name: str, username: str | None, lang: str):
         user = await cls.get(id)
-        data = {"username": username}
+        data = {"username": username, 'name': name}
         if not user:
             data['_id'] = id
-            data['name'] = name
             data['lang'] = lang
         user = await cls.update(user.id, **data) if user else await cls.create(**data)
         return user
+
+    @classmethod
+    async def get_by_name(cls, name: str):
+        users = await cls._collection.find({"$text": {"$search": name}}).to_list(length=10000)
+        return [cls(**i) for i in users]
 
 
 User.set_collection(db['users'])

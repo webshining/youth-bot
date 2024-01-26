@@ -3,7 +3,7 @@ LOCALES_PATH := ./data/locales
 I18N_DOMAIN := $(or $(I18N_DOMAIN),bot)
 
 run:
-	./bin/entrypoint.sh
+	python main.py
 logs:
 	docker-compose logs -f app
 rebuild:

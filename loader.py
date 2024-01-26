@@ -1,21 +1,17 @@
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
+from aiogram.fsm.storage.redis import RedisStorage
 from aiogram.utils.i18n import I18n
 from motor.motor_tornado import MotorClient
+from redis.asyncio.client import Redis
 
 from data.config import (I18N_DOMAIN, I18N_PATH, MONGO_URL, RD_URI,
                          TELEGRAM_BOT_TOKEN)
 
 bot = Bot(TELEGRAM_BOT_TOKEN, parse_mode=ParseMode.HTML, disable_web_page_preview=True)
-if RD_URI:
-    from aiogram.fsm.storage.redis import RedisStorage
-    from redis.asyncio.client import Redis
 
-    storage = RedisStorage(Redis.from_url(RD_URI))
-else:
-    from aiogram.fsm.storage.memory import MemoryStorage
-
-    storage = MemoryStorage()
+redis = Redis.from_url(RD_URI)
+storage = RedisStorage(redis)
 
 dp = Dispatcher(storage=storage)
 client = MotorClient(MONGO_URL)

@@ -1,12 +1,13 @@
 import asyncio
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.triggers.cron import CronTrigger
 
 from app.commands import set_default_commands
 from app.handlers import setup_handlers
 from app.middlewares import setup_middlewares
 from database.models import Config, List
-from loader import bot, dp, _
+from loader import _, bot, dp
 from utils import logger
 
 
@@ -35,8 +36,8 @@ async def on_startup() -> None:
         await Config.create()
     await set_default_commands()
     scheduler = AsyncIOScheduler()
-    # scheduler.add_job(notify, 'interval', seconds=5)
-    # scheduler.start()
+    scheduler.add_job(notify, trigger=CronTrigger(day_of_week="sun", hour=6))
+    scheduler.start()
     logger.info("Bot started!")
 
 

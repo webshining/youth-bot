@@ -29,12 +29,23 @@ class Base(BaseModel):
         return cls(**obj) if obj else None
 
     @classmethod
+    async def get_by(cls, **kwargs):
+        if 'id' in kwargs:
+            kwargs['_id'] = kwargs.pop('id')
+        obj = await cls._collection.find_one(kwargs)
+        return cls(**obj) if obj else None
+
+    @classmethod
     async def get_all(cls):
         objs = cls._collection.find()
         return [cls(**u) async for u in objs]
 
     @classmethod
     async def update(cls, id: int, **kwargs):
+        if 'id' in kwargs:
+            del kwargs['id']
+        if '_id' in kwargs:
+            del kwargs['_id']
         await cls._collection.find_one_and_update({'_id': id}, {'$set': kwargs})
         return await cls.get(id)
 

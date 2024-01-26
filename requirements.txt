@@ -5,6 +5,13 @@ environs
 loguru
 apscheduler
 
+# REST API
+fastapi
+uvicorn
+gunicorn
+jinja2
+pyjwt
+
 # Database & storage
 motor
 tornado

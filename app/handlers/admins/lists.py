@@ -19,7 +19,7 @@ async def _lists_call_create(call: CallbackQuery, state: FSMContext):
 @router.message(ListState.create_name, F.text)
 async def _lists_create(message: Message, state: FSMContext, user: User):
     await List.create(name=message.text)
-    text, markup = await _get_lists_data(user.is_admin())
+    text, markup = await _get_lists_data(user)
 
     await message.answer(text, reply_markup=markup)
     await state.set_state(None)

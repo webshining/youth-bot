@@ -18,6 +18,8 @@ services:
       MONGO_PASS: ${MONGO_PASS:-admin}
     entrypoint:
       - ./bin/entrypoint.sh
+    ports:
+      - "4400:4000"
   redis:
     image: redis:alpine
     restart: unless-stopped
