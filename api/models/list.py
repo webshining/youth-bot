@@ -1,10 +1,13 @@
-from pydantic import BaseModel
+from typing import Optional
+
+from fastapi import Query
+from pydantic import BaseModel, Field
 
 
 class ListUserUpdate(BaseModel):
     user_id: int
-    rules: list[str]
-    num: int
+    rules: Optional[list[str]] = Field([])
+    num: Optional[int] = Field(0)
 
 
 class ListUpdate(BaseModel):

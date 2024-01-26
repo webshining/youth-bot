@@ -23,9 +23,6 @@ def get_lists_markup(items: list[List], user: User) -> InlineKeyboardMarkup:
 def get_list_markup(item: List, user: User) -> InlineKeyboardMarkup:
     buttons = []
     rules = item.rules(user)
-    # if "users" in rules:
-    #     buttons.append(InlineKeyboardButton(text=_("➕ Add users"), callback_data=f'list_users_add_{item.id}'))
-    #     buttons.append(InlineKeyboardButton(text=_("➖ Remove users"), callback_data=f'list_users_remove_{item.id}'))
     if "delete" in rules and item.removable:
         buttons.append(InlineKeyboardButton(text=_("❌ Delete"), callback_data=f'list_delete_{item.id}'))
     if "edit" in rules:

@@ -16,4 +16,4 @@ app.add_middleware(
 app.include_router(api_router)
 
 if __name__ == "__main__":
-    uvicorn.run("server:app", reload=True, host="0.0.0.0", port=4000, log_level="warning")
+    uvicorn.run("server:app", reload=True, host="0.0.0.0", port=4000, log_level="warning", root_path=ROOT_PATH)

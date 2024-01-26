@@ -32,11 +32,11 @@ async def notify():
 
 
 async def on_startup() -> None:
-    if not await Config.get(1):
-        await Config.create()
+    if (config := await Config.get(1)) is None:
+        config = await Config.create()
     await set_default_commands()
     scheduler = AsyncIOScheduler()
-    scheduler.add_job(notify, trigger=CronTrigger(day_of_week="sun", hour=6))
+    scheduler.add_job(notify, trigger=CronTrigger(day_of_week=config.cron_weekday, hour=config.cron_hour))
     scheduler.start()
     logger.info("Bot started!")
 

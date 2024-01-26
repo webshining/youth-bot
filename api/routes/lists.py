@@ -24,4 +24,6 @@ async def _list_put(id: int, dto: ListUpdate):
     list = await List.get(id)
     if not list:
         return {"error": notfound.detail}
+    for i, u in enumerate(dto.users):
+        u.num = i+1
     await List.update(id, **dto.model_dump())
