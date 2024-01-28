@@ -14,7 +14,7 @@ from utils import logger
 async def notify():
     config = await Config.get(1)
     step = config.step
-    users = (await List.get(config.prayer_list)).users
+    users = (await List.get(1)).users
     length = len(users)
     for i in range(1, length + 1):
         next_digit = (i + step - 1) % length + 1
@@ -25,18 +25,20 @@ async def notify():
                                    text=_("This week you pray for <b>{}</b>", locale=first_user.lang).format(
                                        f'<a href="t.me/{second_user.username}">{second_user.name}</a>'
                                        if second_user.username else second_user.name))
-        except:
-            pass
+            logger.info(f"message-{second_user.name} sended to {first_user.id}")
+        except Exception as e:
+            logger.error(e)
+            logger.error(f"message-{second_user.name} for {first_user.id}-{first_user.name} was not sent")
     step = 1 if step + 1 >= length else step + 1
     await Config.update(1, step=step)
 
 
 async def on_startup() -> None:
-    if (config := await Config.get(1)) is None:
-        config = await Config.create()
+    if not await Config.get(1):
+        await Config.create()
     await set_default_commands()
     scheduler = AsyncIOScheduler()
-    scheduler.add_job(notify, trigger=CronTrigger(day_of_week=config.cron_weekday, hour=config.cron_hour))
+    scheduler.add_job(notify, trigger=CronTrigger(day_of_week="sun", hour=20, timezone="Europe/Kyiv"))
     scheduler.start()
     logger.info("Bot started!")
 
