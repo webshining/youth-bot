@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-01-22 22:09+0200\n"
+"POT-Creation-Date: 2024-02-02 03:49+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.14.0\n"
 
-#: main.py:23
+#: main.py:25
 msgid "This week you pray for <b>{}</b>"
 msgstr ""
 
@@ -26,15 +26,23 @@ msgid "start chat"
 msgstr ""
 
 #: app/commands/default.py:9
-msgid "retrieve lists"
+msgid "search song"
 msgstr ""
 
 #: app/commands/default.py:10
-msgid "cancel"
+msgid "retrieve lists"
 msgstr ""
 
 #: app/commands/default.py:11
+msgid "cancel"
+msgstr ""
+
+#: app/commands/default.py:12
 msgid "change language"
+msgstr ""
+
+#: app/commands/super_admin.py:10
+msgid "get users list [admin]"
 msgstr ""
 
 #: app/filters/admin.py:16 app/filters/role.py:21
@@ -51,14 +59,6 @@ msgstr ""
 
 #: app/handlers/admins/users.py:35
 msgid "Users is empty🫡"
-msgstr ""
-
-#: app/handlers/users/lang.py:12
-msgid "Select language:"
-msgstr ""
-
-#: app/handlers/users/lang.py:18
-msgid "Success"
 msgstr ""
 
 #: app/handlers/users/lists.py:43
@@ -81,7 +81,40 @@ msgstr ""
 msgid "Select list:"
 msgstr ""
 
-#: app/handlers/users/start.py:11
+#: app/handlers/users/search.py:15
+msgid "Enter song name:"
+msgstr ""
+
+#: app/handlers/users/search.py:23 app/handlers/users/search.py:56
+msgid "Select song:"
+msgstr ""
+
+#: app/handlers/users/search.py:30
+msgid "A song with this name was not found, try another:"
+msgstr ""
+
+#: app/handlers/users/search.py:44
+msgid "Looks like the song has no lyrics"
+msgstr ""
+
+#: app/handlers/users/search.py:46 app/handlers/users/search.py:61
+#: app/handlers/users/search.py:71 app/handlers/users/search.py:81
+msgid "Looks like the songs are out of memory or you used /cancel"
+msgstr ""
+
+#: app/handlers/users/search.py:79
+msgid "Looks like there’s no music on the resource for this song"
+msgstr ""
+
+#: app/handlers/users/settings.py:12
+msgid "Select language:"
+msgstr ""
+
+#: app/handlers/users/settings.py:18
+msgid "Success"
+msgstr ""
+
+#: app/handlers/users/start.py:23
 msgid "Hello <b>{}</b>"
 msgstr ""
 
@@ -93,19 +126,35 @@ msgstr ""
 msgid "🔄 Refresh"
 msgstr ""
 
-#: app/keyboards/lists.py:26
+#: app/keyboards/lists.py:27
 msgid "❌ Delete"
 msgstr ""
 
-#: app/keyboards/lists.py:28
+#: app/keyboards/lists.py:29
 msgid "✏️ Edit"
 msgstr ""
 
-#: app/keyboards/lists.py:32
+#: app/keyboards/lists.py:30
 msgid "✍️ Send message"
 msgstr ""
 
-#: app/keyboards/lists.py:34
+#: app/keyboards/lists.py:36
 msgid "⬅️ Back"
+msgstr ""
+
+#: app/keyboards/search.py:23
+msgid "Back"
+msgstr ""
+
+#: app/keyboards/search.py:24
+msgid "Chords: On"
+msgstr ""
+
+#: app/keyboards/search.py:24
+msgid "Chords: Off"
+msgstr ""
+
+#: app/keyboards/search.py:26
+msgid "Music"
 msgstr ""
 

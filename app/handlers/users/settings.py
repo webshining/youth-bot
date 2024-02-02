@@ -1,4 +1,3 @@
-from aiogram import F
 from aiogram.filters import Command
 from aiogram.types import Message, CallbackQuery
 
@@ -9,7 +8,6 @@ from loader import _
 
 
 @router.message(Command("lang"))
-@router.message(F.text == _("⚙️ Settings"))
 async def _lang(message: Message):
     await message.answer(_('Select language:'), reply_markup=get_lang_markup())
 

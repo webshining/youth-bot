@@ -1,11 +1,10 @@
 import asyncio
 
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from apscheduler.triggers.cron import CronTrigger
-
 from app.commands import set_default_commands
 from app.handlers import setup_handlers
 from app.middlewares import setup_middlewares
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.triggers.cron import CronTrigger
 from database.models import Config, List
 from loader import _, bot, dp
 from utils import logger
@@ -25,10 +24,10 @@ async def notify():
                                    text=_("This week you pray for <b>{}</b>", locale=first_user.lang).format(
                                        f'<a href="t.me/{second_user.username}">{second_user.name}</a>'
                                        if second_user.username else second_user.name))
-            logger.info(f"message-{second_user.name} sended to {first_user.id}")
         except Exception as e:
             logger.error(e)
             logger.error(f"message-{second_user.name} for {first_user.id}-{first_user.name} was not sent")
+        await asyncio.sleep(0.5)
     step = 1 if step + 1 >= length else step + 1
     await Config.update(1, step=step)
 

@@ -4,18 +4,15 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message
 
 from app.filters import ListRoleFilter
-from app.keyboards import (get_apply_markup, get_list_markup, get_lists_markup,
-                           get_users_markup)
+from app.keyboards import (get_apply_markup, get_list_markup, get_lists_markup)
 from app.routers import user_router as router
 from app.states import ListState
 from database.models import List, User
 from loader import _
-
 from ..admins.users import _get_users_text
 
 
 @router.message(Command('lists'))
-@router.message(F.text == _("📝 Lists"))
 async def _lists(message: Message, user: User):
     text, markup = await _get_lists_data(user)
     await message.answer(text, reply_markup=markup)

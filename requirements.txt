@@ -12,6 +12,8 @@ gunicorn
 jinja2
 pyjwt
 
+requests-html
+
 # Database & storage
 motor
 tornado

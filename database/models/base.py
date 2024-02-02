@@ -37,8 +37,8 @@ class Base(BaseModel):
 
     @classmethod
     async def get_all(cls):
-        objs = cls._collection.find()
-        return [cls(**u) async for u in objs]
+        objs = await cls._collection.find().to_list(10000)
+        return [cls(**u) for u in objs]
 
     @classmethod
     async def update(cls, id: int, **kwargs):

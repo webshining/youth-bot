@@ -1,7 +1,7 @@
 import csv
 import io
 
-from aiogram import html, F
+from aiogram import html
 from aiogram.filters import Command
 from aiogram.types import BufferedInputFile, Message
 
@@ -12,7 +12,6 @@ from loader import _
 
 
 @router.message(Command('users'), AdminFilter(super=True))
-@router.message(F.text == _("🗄 Users"), AdminFilter(super=True))
 async def _users(message: Message):
     text, file = await _get_users_data()
     text = _("<b>Users:</b>") + text

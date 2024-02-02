@@ -6,6 +6,3 @@ class ListState(StatesGroup):
     edit_name = State()
 
     send_message = State()
-
-    users_add = State()
-    users_remove = State()
