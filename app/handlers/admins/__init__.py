@@ -1,7 +1,7 @@
-from .lists import router
-from .notify import router
-from .users import router
+from .lists import router as admin_router
+from .notify import router as super_admin_router
+from .users import router as super_admin_router
 
 __all__ = [
-    'router'
+    'admin_router', "super_admin_router"
 ]

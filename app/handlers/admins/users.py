@@ -5,13 +5,12 @@ from aiogram import html
 from aiogram.filters import Command
 from aiogram.types import BufferedInputFile, Message
 
-from app.filters import AdminFilter
-from app.routers import admin_router as router
+from app.routers import super_admin_router as router
 from database.models import User
 from loader import _
 
 
-@router.message(Command('users'), AdminFilter(super=True))
+@router.message(Command('users'))
 async def _users(message: Message):
     text, file = await _get_users_data()
     text = _("<b>Users:</b>") + text

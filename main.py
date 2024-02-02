@@ -1,13 +1,17 @@
 import asyncio
+import logging
+
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.triggers.cron import CronTrigger
 
 from app.commands import set_default_commands
 from app.handlers import setup_handlers
 from app.middlewares import setup_middlewares
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from apscheduler.triggers.cron import CronTrigger
 from database.models import Config, List
 from loader import _, bot, dp
 from utils import logger
+
+logging.basicConfig(level=logging.WARNING)
 
 
 async def notify():

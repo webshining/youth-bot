@@ -7,7 +7,8 @@ from .admins import get_admins_commands
 def get_super_admins_commands(lang: str = 'en'):
     commands = get_admins_commands()
     commands.extend([
-        BotCommand(command="/users", description=_("get users list [admin]", locale=lang))
+        BotCommand(command="/users", description=_("get users list [super_admin]", locale=lang)),
+        BotCommand(command="/notify", description=_("send message to all users [super_admin]", locale=lang))
     ])
     return commands
 
