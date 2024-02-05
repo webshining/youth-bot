@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-02 03:49+0200\n"
+"POT-Creation-Date: 2024-02-05 23:22+0200\n"
 "PO-Revision-Date: 2023-09-26 01:25+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.14.0\n"
 
-#: main.py:25
+#: main.py:28
 msgid "This week you pray for <b>{}</b>"
 msgstr ""
 
@@ -43,10 +43,14 @@ msgid "change language"
 msgstr ""
 
 #: app/commands/super_admin.py:10
-msgid "get users list [admin]"
+msgid "get users list [super_admin]"
 msgstr ""
 
-#: app/filters/admin.py:16 app/filters/role.py:21
+#: app/commands/super_admin.py:11
+msgid "send message to all users [super_admin]"
+msgstr ""
+
+#: app/filters/role.py:21
 msgid "Not enough rights🚫"
 msgstr ""
 
@@ -54,11 +58,15 @@ msgstr ""
 msgid "Enter list name:"
 msgstr ""
 
-#: app/handlers/admins/users.py:17
+#: app/handlers/admins/notify.py:17 app/handlers/users/lists.py:50
+msgid "Enter message text:"
+msgstr ""
+
+#: app/handlers/admins/users.py:16
 msgid "<b>Users:</b>"
 msgstr ""
 
-#: app/handlers/admins/users.py:35
+#: app/handlers/admins/users.py:34
 msgid "Users is empty🫡"
 msgstr ""
 
@@ -70,10 +78,6 @@ msgstr ""
 msgid "Enter new name:"
 msgstr ""
 
-#: app/handlers/users/lists.py:50
-msgid "Enter message text:"
-msgstr ""
-
 #: app/handlers/users/lists.py:117
 msgid "Do you really want to change the list name from <b>{}</b> to <b>{}</b>?"
 msgstr ""
@@ -82,28 +86,28 @@ msgstr ""
 msgid "Select list:"
 msgstr ""
 
-#: app/handlers/users/search.py:15
+#: app/handlers/users/search.py:16
 msgid "Enter song name:"
 msgstr ""
 
-#: app/handlers/users/search.py:23 app/handlers/users/search.py:56
+#: app/handlers/users/search.py:24 app/handlers/users/search.py:57
 msgid "Select song:"
 msgstr ""
 
-#: app/handlers/users/search.py:30
+#: app/handlers/users/search.py:31
 msgid "A song with this name was not found, try another:"
 msgstr ""
 
-#: app/handlers/users/search.py:44
+#: app/handlers/users/search.py:45
 msgid "Looks like the song has no lyrics"
 msgstr ""
 
-#: app/handlers/users/search.py:46 app/handlers/users/search.py:61
-#: app/handlers/users/search.py:71 app/handlers/users/search.py:81
+#: app/handlers/users/search.py:47 app/handlers/users/search.py:62
+#: app/handlers/users/search.py:72 app/handlers/users/search.py:82
 msgid "Looks like the songs are out of memory or you used /cancel"
 msgstr ""
 
-#: app/handlers/users/search.py:79
+#: app/handlers/users/search.py:80
 msgid "Looks like there’s no music on the resource for this song"
 msgstr ""
 
@@ -115,8 +119,12 @@ msgstr ""
 msgid "Success"
 msgstr ""
 
-#: app/handlers/users/start.py:23
-msgid "Hello <b>{}</b>"
+#: app/handlers/users/start.py:21
+msgid "Hello <b>{name}</b>"
+msgstr ""
+
+#: app/handlers/users/start.py:21
+msgid "Commands:"
 msgstr ""
 
 #: app/keyboards/lists.py:16
@@ -139,12 +147,8 @@ msgstr ""
 msgid "✍️ Send message"
 msgstr ""
 
-#: app/keyboards/lists.py:36
+#: app/keyboards/lists.py:36 app/keyboards/search.py:23
 msgid "⬅️ Back"
-msgstr ""
-
-#: app/keyboards/search.py:23
-msgid "Back"
 msgstr ""
 
 #: app/keyboards/search.py:24
@@ -181,5 +185,11 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid "⚙️ Settings"
+#~ msgstr ""
+
+#~ msgid "Hello <b>{}</b>"
+#~ msgstr ""
+
+#~ msgid "Back"
 #~ msgstr ""
 

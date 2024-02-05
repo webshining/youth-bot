@@ -18,7 +18,7 @@ async def _start(message: Message, user: User):
     else:
         commands = get_default_commands(user.lang)
 
-    text = _('Hello <b>{name}</b>') + "\n\nCommands:"
+    text = _('Hello <b>{name}</b>') + "\n\n" + _("Commands:")
     for i in commands:
         text += f"\n{i.command} - {i.description.capitalize()}"
     await message.answer(text.format(name=html.quote(message.from_user.full_name)))
