@@ -1,20 +1,20 @@
 from aiogram.filters import Filter
 from aiogram.types import CallbackQuery
 
-from database.models import List
+from database.models import Group
 from loader import _
 
 
-class ListRoleFilter(Filter):
+class GroupRoleFilter(Filter):
     async def __call__(self, call: CallbackQuery, **data) -> bool:
         user = data['user']
-        action, list_id = call.data.split("_")[-2:]
+        action, group_id = call.data.split("_")[-2:]
         if user.status in ("admin", "super_admin"):
             _is = True
-        elif not list_id.isnumeric():
+        elif not group_id.isnumeric():
             _is = True
-        elif (item := await List.get(int(list_id))) is not None:
-            _is = action in item.rules(user)
+        elif (group := await Group.get(int(group_id))) is not None:
+            _is = action in group.rules(user)
         else:
             _is = False
         if not _is:

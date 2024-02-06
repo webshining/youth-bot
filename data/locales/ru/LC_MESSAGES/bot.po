@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-05 23:22+0200\n"
+"POT-Creation-Date: 2024-02-06 02:32+0200\n"
 "PO-Revision-Date: 2023-09-26 01:25+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -23,6 +23,14 @@ msgstr ""
 msgid "This week you pray for <b>{}</b>"
 msgstr "На этой неделе вы молитесь за <b>{}</b>"
 
+#: app/commands/admins.py:10
+msgid "get needs [admin]"
+msgstr "получить список нужд [админ]"
+
+#: app/commands/admins.py:11
+msgid "clear needs [admin]"
+msgstr "очистить список нужд [админ]"
+
 #: app/commands/default.py:8
 msgid "start chat"
 msgstr "начать"
@@ -32,19 +40,23 @@ msgid "search song"
 msgstr "искать песню"
 
 #: app/commands/default.py:10
-msgid "retrieve lists"
-msgstr "получить списки"
+msgid "write a need"
+msgstr "написать нужду"
 
 #: app/commands/default.py:11
+msgid "get groups"
+msgstr "получить список групп"
+
+#: app/commands/default.py:12
 msgid "cancel"
 msgstr "отменить"
 
-#: app/commands/default.py:12
+#: app/commands/default.py:13
 msgid "change language"
 msgstr "изменить язык"
 
 #: app/commands/super_admin.py:10
-msgid "get users list [super_admin]"
+msgid "get users [super_admin]"
 msgstr "получить список пользователей [суперадмин]"
 
 #: app/commands/super_admin.py:11
@@ -55,11 +67,20 @@ msgstr "отправить сообщение всем пользователя�
 msgid "Not enough rights🚫"
 msgstr "Не достаточно прав🚫"
 
-#: app/handlers/admins/lists.py:14
-msgid "Enter list name:"
-msgstr "Введите имя списка:"
+#: app/handlers/admins/groups.py:14
+msgid "Enter group name:"
+msgstr "Введите название группы:"
 
-#: app/handlers/admins/notify.py:17 app/handlers/users/lists.py:50
+#: app/handlers/admins/needs.py:12
+msgid "No needs🫡"
+msgstr "Нужд нету🫡"
+
+#: app/handlers/admins/needs.py:20 app/handlers/users/need.py:39
+#: app/handlers/users/settings.py:18
+msgid "Success"
+msgstr "Готово"
+
+#: app/handlers/admins/notify.py:17 app/handlers/users/groups.py:50
 msgid "Enter message text:"
 msgstr "Введите текст сообщения:"
 
@@ -68,28 +89,38 @@ msgid "<b>Users:</b>"
 msgstr "<b>Пользователи:</b>"
 
 #: app/handlers/admins/users.py:34
-msgid "Users is empty🫡"
-msgstr "Пользователей нет🫡"
+msgid "No users🫡"
+msgstr "Пользователей нету🫡"
 
-#: app/handlers/users/lists.py:43
-msgid "Do you really want to delete the list <b>{}</b>?"
-msgstr "Действительно ли вы хотите удалить список <b>{}</b>?"
+#: app/handlers/users/groups.py:43
+msgid "Do you really want to delete the group <b>{}</b>?"
+msgstr "Вы действительно хотите удалить группу <b>{}</b>?"
 
-#: app/handlers/users/lists.py:47
+#: app/handlers/users/groups.py:47
 msgid "Enter new name:"
 msgstr "Введите новое имя:"
 
-#: app/handlers/users/lists.py:117
-msgid "Do you really want to change the list name from <b>{}</b> to <b>{}</b>?"
-msgstr "Действительно ли вы хотите изменить имя списка с <b>{}</b> на <b>{}</b>?"
+#: app/handlers/users/groups.py:117
+msgid "Do you really want to change the group name from <b>{}</b> to <b>{}</b>?"
+msgstr ""
+"Действительно ли вы хотите изменить название группы с <b>{}</b> на "
+"<b>{}</b>?"
 
-#: app/handlers/users/lists.py:140
-msgid "Select list:"
-msgstr "Выберите список:"
+#: app/handlers/users/groups.py:140
+msgid "Select group:"
+msgstr "Выберите группу:"
+
+#: app/handlers/users/need.py:15
+msgid "Enter your name:"
+msgstr "Введите ваше имя:"
+
+#: app/handlers/users/need.py:22
+msgid "Enter your need:"
+msgstr "Введите вашу нужду:"
 
 #: app/handlers/users/search.py:16
 msgid "Enter song name:"
-msgstr "Введите имя песни:"
+msgstr "Введите название песни:"
 
 #: app/handlers/users/search.py:24 app/handlers/users/search.py:57
 msgid "Select song:"
@@ -97,11 +128,11 @@ msgstr "Выберите песню:"
 
 #: app/handlers/users/search.py:31
 msgid "A song with this name was not found, try another:"
-msgstr "Песню с таким именем не найдено, попробуйте другое:"
+msgstr "Песню с таким названием не найдено, попробуйте другое:"
 
 #: app/handlers/users/search.py:45
 msgid "Looks like the song has no lyrics"
-msgstr "Похоже, в песне нет слов"
+msgstr "Похоже, в песне нету слов"
 
 #: app/handlers/users/search.py:47 app/handlers/users/search.py:62
 #: app/handlers/users/search.py:72 app/handlers/users/search.py:82
@@ -116,40 +147,35 @@ msgstr "Похоже, на ресурсе нет музыки для этой п
 msgid "Select language:"
 msgstr "Выберите язык:"
 
-#: app/handlers/users/settings.py:18
-msgid "Success"
-msgstr "Готово"
-
 #: app/handlers/users/start.py:21
-#, fuzzy
 msgid "Hello <b>{name}</b>"
-msgstr "Привет <b>{}</b>"
+msgstr "Привет <b>{name}</b>"
 
 #: app/handlers/users/start.py:21
 msgid "Commands:"
 msgstr "Команди:"
 
-#: app/keyboards/lists.py:16
+#: app/keyboards/groups.py:16
 msgid "➕ Create"
 msgstr "➕ Создать"
 
-#: app/keyboards/lists.py:17
+#: app/keyboards/groups.py:17
 msgid "🔄 Refresh"
 msgstr "🔄 Обновить"
 
-#: app/keyboards/lists.py:27
+#: app/keyboards/groups.py:27
 msgid "❌ Delete"
 msgstr "❌ Удалить"
 
-#: app/keyboards/lists.py:29
+#: app/keyboards/groups.py:29
 msgid "✏️ Edit"
 msgstr "✏️ Изменить"
 
-#: app/keyboards/lists.py:30
+#: app/keyboards/groups.py:30
 msgid "✍️ Send message"
 msgstr "✍️ Отправить сообщение"
 
-#: app/keyboards/lists.py:36 app/keyboards/search.py:23
+#: app/keyboards/groups.py:36 app/keyboards/search.py:23
 msgid "⬅️ Back"
 msgstr "⬅️ Назад"
 

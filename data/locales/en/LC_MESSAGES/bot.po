@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-05 23:22+0200\n"
+"POT-Creation-Date: 2024-02-06 02:32+0200\n"
 "PO-Revision-Date: 2023-09-26 01:25+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -22,6 +22,14 @@ msgstr ""
 msgid "This week you pray for <b>{}</b>"
 msgstr ""
 
+#: app/commands/admins.py:10
+msgid "get needs [admin]"
+msgstr ""
+
+#: app/commands/admins.py:11
+msgid "clear needs [admin]"
+msgstr ""
+
 #: app/commands/default.py:8
 msgid "start chat"
 msgstr ""
@@ -31,19 +39,23 @@ msgid "search song"
 msgstr ""
 
 #: app/commands/default.py:10
-msgid "retrieve lists"
+msgid "write a need"
 msgstr ""
 
 #: app/commands/default.py:11
-msgid "cancel"
+msgid "get groups"
 msgstr ""
 
 #: app/commands/default.py:12
+msgid "cancel"
+msgstr ""
+
+#: app/commands/default.py:13
 msgid "change language"
 msgstr ""
 
 #: app/commands/super_admin.py:10
-msgid "get users list [super_admin]"
+msgid "get users [super_admin]"
 msgstr ""
 
 #: app/commands/super_admin.py:11
@@ -54,11 +66,20 @@ msgstr ""
 msgid "Not enough rights🚫"
 msgstr ""
 
-#: app/handlers/admins/lists.py:14
-msgid "Enter list name:"
+#: app/handlers/admins/groups.py:14
+msgid "Enter group name:"
 msgstr ""
 
-#: app/handlers/admins/notify.py:17 app/handlers/users/lists.py:50
+#: app/handlers/admins/needs.py:12
+msgid "No needs🫡"
+msgstr ""
+
+#: app/handlers/admins/needs.py:20 app/handlers/users/need.py:39
+#: app/handlers/users/settings.py:18
+msgid "Success"
+msgstr ""
+
+#: app/handlers/admins/notify.py:17 app/handlers/users/groups.py:50
 msgid "Enter message text:"
 msgstr ""
 
@@ -67,23 +88,31 @@ msgid "<b>Users:</b>"
 msgstr ""
 
 #: app/handlers/admins/users.py:34
-msgid "Users is empty🫡"
+msgid "No users🫡"
 msgstr ""
 
-#: app/handlers/users/lists.py:43
-msgid "Do you really want to delete the list <b>{}</b>?"
+#: app/handlers/users/groups.py:43
+msgid "Do you really want to delete the group <b>{}</b>?"
 msgstr ""
 
-#: app/handlers/users/lists.py:47
+#: app/handlers/users/groups.py:47
 msgid "Enter new name:"
 msgstr ""
 
-#: app/handlers/users/lists.py:117
-msgid "Do you really want to change the list name from <b>{}</b> to <b>{}</b>?"
+#: app/handlers/users/groups.py:117
+msgid "Do you really want to change the group name from <b>{}</b> to <b>{}</b>?"
 msgstr ""
 
-#: app/handlers/users/lists.py:140
-msgid "Select list:"
+#: app/handlers/users/groups.py:140
+msgid "Select group:"
+msgstr ""
+
+#: app/handlers/users/need.py:15
+msgid "Enter your name:"
+msgstr ""
+
+#: app/handlers/users/need.py:22
+msgid "Enter your need:"
 msgstr ""
 
 #: app/handlers/users/search.py:16
@@ -115,10 +144,6 @@ msgstr ""
 msgid "Select language:"
 msgstr ""
 
-#: app/handlers/users/settings.py:18
-msgid "Success"
-msgstr ""
-
 #: app/handlers/users/start.py:21
 msgid "Hello <b>{name}</b>"
 msgstr ""
@@ -127,27 +152,27 @@ msgstr ""
 msgid "Commands:"
 msgstr ""
 
-#: app/keyboards/lists.py:16
+#: app/keyboards/groups.py:16
 msgid "➕ Create"
 msgstr ""
 
-#: app/keyboards/lists.py:17
+#: app/keyboards/groups.py:17
 msgid "🔄 Refresh"
 msgstr ""
 
-#: app/keyboards/lists.py:27
+#: app/keyboards/groups.py:27
 msgid "❌ Delete"
 msgstr ""
 
-#: app/keyboards/lists.py:29
+#: app/keyboards/groups.py:29
 msgid "✏️ Edit"
 msgstr ""
 
-#: app/keyboards/lists.py:30
+#: app/keyboards/groups.py:30
 msgid "✍️ Send message"
 msgstr ""
 
-#: app/keyboards/lists.py:36 app/keyboards/search.py:23
+#: app/keyboards/groups.py:36 app/keyboards/search.py:23
 msgid "⬅️ Back"
 msgstr ""
 
@@ -191,5 +216,99 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid "Back"
+#~ msgstr ""
+
+#~ msgid "retrieve lists"
+#~ msgstr ""
+
+#~ msgid "Enter list name:"
+#~ msgstr ""
+
+#~ msgid "Do you really want to delete the list <b>{}</b>?"
+#~ msgstr ""
+
+#~ msgid "Do you really want to change the list name from <b>{}</b> to <b>{}</b>?"
+#~ msgstr ""
+
+#~ msgid "Select list:"
+#~ msgstr ""
+
+#~ msgid "get users list [super_admin]"
+#~ msgstr ""
+
+#~ msgid "start message"
+#~ msgstr ""
+
+#~ msgid "get schedule"
+#~ msgstr ""
+
+#~ msgid "get subjects info"
+#~ msgstr ""
+
+#~ msgid "get current lesson"
+#~ msgstr ""
+
+#~ msgid "State reset"
+#~ msgstr ""
+
+#~ msgid "Users is empty🫡"
+#~ msgstr ""
+
+#~ msgid "No class today"
+#~ msgstr ""
+
+#~ msgid "Classes are over"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "\n"
+#~ "\n"
+#~ "Class ends at {} in {}"
+#~ msgstr ""
+
+#~ msgid "No class right now! Next class: <b>{}</b> at {} in {}"
+#~ msgstr ""
+
+#~ msgid "Schedule is empty🫡"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Hello <b>{name}</b>👋\n"
+#~ "I am a diary bot\n"
+#~ "<b>\n"
+#~ "\n"
+#~ "Commands:</b>"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "\n"
+#~ "\n"
+#~ "Creator: <b>@webshining</b>😉\n"
+#~ "Repositofy: <b><a href=\"https://github.com/webshining"
+#~ "/study-bot\">GitHub</a></b>"
+#~ msgstr ""
+
+#~ msgid "Subject not found🫡"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "<b>{}:</b>\n"
+#~ "Teacher: <b>{}</b>\n"
+#~ "Audience: <b>{}</b>"
+#~ msgstr ""
+
+#~ msgid "Select subject📚:"
+#~ msgstr ""
+
+#~ msgid "Subjects is empty🫡"
+#~ msgstr ""
+
+#~ msgid "This week"
+#~ msgstr ""
+
+#~ msgid "Next week"
+#~ msgstr ""
+
+#~ msgid "Monday Tuesday Wednesday Thursday Friday Saturday Sunday"
 #~ msgstr ""
 

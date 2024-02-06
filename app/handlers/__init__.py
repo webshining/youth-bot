@@ -1,7 +1,7 @@
 from aiogram import Dispatcher
 
 import app.handlers.cancel
-import app.handlers.error
+# import app.handlers.error
 from .admins import admin_router, super_admin_router
 from .users import router as user_router
 from ..filters import AdminFilter

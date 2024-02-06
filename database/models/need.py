@@ -3,9 +3,9 @@ from pydantic import Field
 from .base import Base
 
 
-class Config(Base):
+class Need(Base):
     id: int = Field(default_factory=int, alias="_id")
-    step: int = Field(default=1)
+    text: str
 
 
-Config.set_collection('config')
+Need.set_collection("needs")

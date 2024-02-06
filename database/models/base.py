@@ -2,6 +2,8 @@ from bson.objectid import ObjectId as BsonObjectId
 from motor.motor_tornado import MotorCollection
 from pydantic import BaseModel
 
+from loader import db
+
 
 class ObjectId(BsonObjectId):
     @classmethod
@@ -22,6 +24,11 @@ class Base(BaseModel):
     async def count(cls):
         num = await cls._collection.count_documents({})
         return num
+
+    @classmethod
+    async def nextid(cls):
+        obj = await cls._collection.find().limit(1).sort({"$natural": -1}).to_list(1)
+        return int(obj[0]['_id']) + 1 if obj else 1
 
     @classmethod
     async def get(cls, id: int):
@@ -52,7 +59,7 @@ class Base(BaseModel):
     @classmethod
     async def create(cls, **kwargs):
         if '_id' not in kwargs:
-            kwargs["_id"] = await cls.count() + 1
+            kwargs["_id"] = await cls.nextid()
         obj = cls(**kwargs)
         obj = await cls._collection.insert_one(obj.model_dump(by_alias=True))
         return await cls.get(obj.inserted_id)
@@ -64,4 +71,4 @@ class Base(BaseModel):
 
     @classmethod
     def set_collection(cls, collection: MotorCollection):
-        cls._collection = collection
+        cls._collection = db[collection]

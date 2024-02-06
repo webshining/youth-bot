@@ -2,7 +2,6 @@ from enum import Enum
 
 from pydantic import Field
 
-from loader import db
 from .base import Base
 
 
@@ -48,4 +47,4 @@ class User(Base):
         return [cls(**i) for i in users]
 
 
-User.set_collection(db['users'])
+User.set_collection('users')

@@ -7,17 +7,17 @@ from aiogram.types import CallbackQuery, Message
 from app.api import get_songs
 from app.keyboards import get_songs_markup, get_song_markup
 from app.routers import user_router as router
-from app.states import Search
+from app.states import SearchState
 from loader import _
 
 
 @router.message(Command('search'))
 async def search_(message: Message, state: FSMContext):
     await message.answer(_("Enter song name:"))
-    await state.set_state(Search.name)
+    await state.set_state(SearchState.name)
 
 
-@router.message(Search.name)
+@router.message(SearchState.name)
 async def search_name_(message: Message, state: FSMContext):
     songs = await get_songs(message.text)
     if songs:

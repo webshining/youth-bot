@@ -9,4 +9,3 @@ from loader import dp
 async def _cancel(message: Message, state: FSMContext):
     await message.delete()
     await state.set_state(None)
-    await state.clear()

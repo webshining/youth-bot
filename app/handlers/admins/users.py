@@ -31,7 +31,7 @@ async def _get_users_data():
 
 
 def _get_users_text(users: list[User]) -> str:
-    text = "\n" + _('Users is empty🫡')
+    text = "\n" + _('No users🫡')
     if users:
         text = ''
         for user in users:

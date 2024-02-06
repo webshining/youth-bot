@@ -7,7 +7,7 @@ from apscheduler.triggers.cron import CronTrigger
 from app.commands import set_default_commands
 from app.handlers import setup_handlers
 from app.middlewares import setup_middlewares
-from database.models import Config, List
+from database.models import Config, Group
 from loader import _, bot, dp
 from utils import logger
 
@@ -17,7 +17,7 @@ logging.basicConfig(level=logging.WARNING)
 async def notify():
     config = await Config.get(1)
     step = config.step
-    users = (await List.get(1)).users
+    users = (await Group.get(1)).users
     length = len(users)
     for i in range(1, length + 1):
         next_digit = (i + step - 1) % length + 1

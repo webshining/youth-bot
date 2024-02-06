@@ -1,16 +1,15 @@
 from typing import Optional
 
-from fastapi import Query
 from pydantic import BaseModel, Field
 
 
-class ListUserUpdate(BaseModel):
+class GroupUserUpdate(BaseModel):
     user_id: int
     rules: Optional[list[str]] = Field([])
     num: Optional[int] = Field(0)
 
 
-class ListUpdate(BaseModel):
+class GroupUpdate(BaseModel):
     name: str
     removable: bool
-    users: list[ListUserUpdate]
+    users: list[GroupUserUpdate]

@@ -1,2 +1,2 @@
-from .list import ListUpdate
+from .group import GroupUpdate
 from .user import UserUpdate

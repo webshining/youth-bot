@@ -1,5 +1,6 @@
 from aiogram.fsm.state import State, StatesGroup
 
 
-class SearchState(StatesGroup):
+class NeedState(StatesGroup):
     name = State()
+    text = State()
