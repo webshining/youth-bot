@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-06 02:32+0200\n"
+"POT-Creation-Date: 2024-02-06 03:16+0200\n"
 "PO-Revision-Date: 2023-09-26 01:25+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: uk\n"
@@ -36,24 +36,24 @@ msgid "start chat"
 msgstr "почати"
 
 #: app/commands/default.py:9
-msgid "search song"
-msgstr "шукати пісню"
-
-#: app/commands/default.py:10
 msgid "write a need"
 msgstr "написати потребу"
+
+#: app/commands/default.py:10
+msgid "search song"
+msgstr "шукати пісню"
 
 #: app/commands/default.py:11
 msgid "get groups"
 msgstr "отримати список груп"
 
 #: app/commands/default.py:12
-msgid "cancel"
-msgstr "скасувати"
+msgid "change settings"
+msgstr "змінити налаштування"
 
 #: app/commands/default.py:13
-msgid "change language"
-msgstr "змінити мову"
+msgid "cancel"
+msgstr "скасувати"
 
 #: app/commands/super_admin.py:10
 msgid "get users [super_admin]"
@@ -76,7 +76,6 @@ msgid "No needs🫡"
 msgstr "Потреб немає🫡"
 
 #: app/handlers/admins/needs.py:20 app/handlers/users/need.py:39
-#: app/handlers/users/settings.py:18
 msgid "Success"
 msgstr "Готово"
 
@@ -141,12 +140,13 @@ msgstr "Схоже в пам'яті нема пісень, або ви вико�
 msgid "Looks like there’s no music on the resource for this song"
 msgstr "Схоже, що на ресурсі немає музики для цієї пісні"
 
-#: app/handlers/users/settings.py:12
-msgid "Select language:"
-msgstr "Оберіть мову:"
+#: app/handlers/users/settings.py:12 app/handlers/users/settings.py:19
+#: app/handlers/users/settings.py:22 app/handlers/users/settings.py:24
+msgid "⚙️Settings:"
+msgstr "⚙️Налаштування"
 
 #: app/handlers/users/start.py:21
-msgid "Hello <b>{name}</b>"
+msgid "Hello <b>{}</b>"
 msgstr "Привіт <b>{}</b>"
 
 #: app/handlers/users/start.py:21
@@ -174,6 +174,7 @@ msgid "✍️ Send message"
 msgstr "✍️ Надіслати повідомлення"
 
 #: app/keyboards/groups.py:36 app/keyboards/search.py:23
+#: app/keyboards/settings.py:11
 msgid "⬅️ Back"
 msgstr "⬅️ Назад"
 
@@ -188,4 +189,16 @@ msgstr "Акорди: Вимк"
 #: app/keyboards/search.py:26
 msgid "Music"
 msgstr "Музика"
+
+#: app/keyboards/settings.py:13
+msgid "🌎Language"
+msgstr "🌎Мова"
+
+#: app/keyboards/settings.py:14
+msgid "🔔Notifications: On"
+msgstr "🔔Повідомлення: Увімк"
+
+#: app/keyboards/settings.py:14
+msgid "🔕Notifications: Off"
+msgstr "🔕Повідомлення: Вимк"
 

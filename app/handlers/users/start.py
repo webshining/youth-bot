@@ -18,10 +18,10 @@ async def _start(message: Message, user: User):
     else:
         commands = get_default_commands(user.lang)
 
-    text = _('Hello <b>{name}</b>') + "\n\n" + _("Commands:")
+    text = _('Hello <b>{}</b>').format(html.quote(message.from_user.full_name)) + "\n\n" + _("Commands:")
     for i in commands:
         text += f"\n{i.command} - {i.description.capitalize()}"
-    await message.answer(text.format(name=html.quote(message.from_user.full_name)))
+    await message.answer(text)
 
     try:
         if user.status == "super_admin":

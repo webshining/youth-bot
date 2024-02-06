@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-06 02:32+0200\n"
+"POT-Creation-Date: 2024-02-06 03:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,11 +34,11 @@ msgid "start chat"
 msgstr ""
 
 #: app/commands/default.py:9
-msgid "search song"
+msgid "write a need"
 msgstr ""
 
 #: app/commands/default.py:10
-msgid "write a need"
+msgid "search song"
 msgstr ""
 
 #: app/commands/default.py:11
@@ -46,11 +46,11 @@ msgid "get groups"
 msgstr ""
 
 #: app/commands/default.py:12
-msgid "cancel"
+msgid "change settings"
 msgstr ""
 
 #: app/commands/default.py:13
-msgid "change language"
+msgid "cancel"
 msgstr ""
 
 #: app/commands/super_admin.py:10
@@ -74,7 +74,6 @@ msgid "No needs🫡"
 msgstr ""
 
 #: app/handlers/admins/needs.py:20 app/handlers/users/need.py:39
-#: app/handlers/users/settings.py:18
 msgid "Success"
 msgstr ""
 
@@ -139,12 +138,13 @@ msgstr ""
 msgid "Looks like there’s no music on the resource for this song"
 msgstr ""
 
-#: app/handlers/users/settings.py:12
-msgid "Select language:"
+#: app/handlers/users/settings.py:12 app/handlers/users/settings.py:19
+#: app/handlers/users/settings.py:22 app/handlers/users/settings.py:24
+msgid "⚙️Settings:"
 msgstr ""
 
 #: app/handlers/users/start.py:21
-msgid "Hello <b>{name}</b>"
+msgid "Hello <b>{}</b>"
 msgstr ""
 
 #: app/handlers/users/start.py:21
@@ -172,6 +172,7 @@ msgid "✍️ Send message"
 msgstr ""
 
 #: app/keyboards/groups.py:36 app/keyboards/search.py:23
+#: app/keyboards/settings.py:11
 msgid "⬅️ Back"
 msgstr ""
 
@@ -185,5 +186,17 @@ msgstr ""
 
 #: app/keyboards/search.py:26
 msgid "Music"
+msgstr ""
+
+#: app/keyboards/settings.py:13
+msgid "🌎Language"
+msgstr ""
+
+#: app/keyboards/settings.py:14
+msgid "🔔Notifications: On"
+msgstr ""
+
+#: app/keyboards/settings.py:14
+msgid "🔕Notifications: Off"
 msgstr ""
 

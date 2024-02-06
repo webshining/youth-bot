@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-06 02:32+0200\n"
+"POT-Creation-Date: 2024-02-06 03:16+0200\n"
 "PO-Revision-Date: 2023-09-26 01:25+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -36,24 +36,24 @@ msgid "start chat"
 msgstr "начать"
 
 #: app/commands/default.py:9
-msgid "search song"
-msgstr "искать песню"
-
-#: app/commands/default.py:10
 msgid "write a need"
 msgstr "написать нужду"
+
+#: app/commands/default.py:10
+msgid "search song"
+msgstr "искать песню"
 
 #: app/commands/default.py:11
 msgid "get groups"
 msgstr "получить список групп"
 
 #: app/commands/default.py:12
-msgid "cancel"
-msgstr "отменить"
+msgid "change settings"
+msgstr "изменить настройки"
 
 #: app/commands/default.py:13
-msgid "change language"
-msgstr "изменить язык"
+msgid "cancel"
+msgstr "отменить"
 
 #: app/commands/super_admin.py:10
 msgid "get users [super_admin]"
@@ -76,7 +76,6 @@ msgid "No needs🫡"
 msgstr "Нужд нету🫡"
 
 #: app/handlers/admins/needs.py:20 app/handlers/users/need.py:39
-#: app/handlers/users/settings.py:18
 msgid "Success"
 msgstr "Готово"
 
@@ -143,13 +142,14 @@ msgstr "Похоже в памяти нету песен, или вы испол
 msgid "Looks like there’s no music on the resource for this song"
 msgstr "Похоже, на ресурсе нет музыки для этой песни"
 
-#: app/handlers/users/settings.py:12
-msgid "Select language:"
-msgstr "Выберите язык:"
+#: app/handlers/users/settings.py:12 app/handlers/users/settings.py:19
+#: app/handlers/users/settings.py:22 app/handlers/users/settings.py:24
+msgid "⚙️Settings:"
+msgstr "⚙️Настройки:"
 
 #: app/handlers/users/start.py:21
-msgid "Hello <b>{name}</b>"
-msgstr "Привет <b>{name}</b>"
+msgid "Hello <b>{}</b>"
+msgstr "Привет <b>{}</b>"
 
 #: app/handlers/users/start.py:21
 msgid "Commands:"
@@ -176,6 +176,7 @@ msgid "✍️ Send message"
 msgstr "✍️ Отправить сообщение"
 
 #: app/keyboards/groups.py:36 app/keyboards/search.py:23
+#: app/keyboards/settings.py:11
 msgid "⬅️ Back"
 msgstr "⬅️ Назад"
 
@@ -190,4 +191,16 @@ msgstr "Аккорды: Выкл"
 #: app/keyboards/search.py:26
 msgid "Music"
 msgstr "Музыка"
+
+#: app/keyboards/settings.py:13
+msgid "🌎Language"
+msgstr "🌎Язык"
+
+#: app/keyboards/settings.py:14
+msgid "🔔Notifications: On"
+msgstr "🔔Уведомления: Вкл"
+
+#: app/keyboards/settings.py:14
+msgid "🔕Notifications: Off"
+msgstr "🔔Уведомления: Выкл"
 

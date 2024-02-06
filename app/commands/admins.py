@@ -5,7 +5,7 @@ from .default import get_default_commands
 
 
 def get_admins_commands(lang: str = 'en'):
-    commands = get_default_commands()
+    commands = get_default_commands(lang)
     commands.extend([
         BotCommand(command="/needs", description=_("get needs [admin]", locale=lang)),
         BotCommand(command="/needs_clear", description=_("clear needs [admin]", locale=lang))

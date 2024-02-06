@@ -18,6 +18,7 @@ class User(Base):
     username: str | None = Field(default=None)
     status: str = Field(default="user")
     lang: str
+    notifications: bool = Field(True)
 
     _status: Status = Status
 
