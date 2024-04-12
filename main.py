@@ -1,5 +1,4 @@
 import asyncio
-import logging
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
@@ -10,8 +9,6 @@ from app.middlewares import setup_middlewares
 from database.models import Config, Group
 from loader import _, bot, dp
 from utils import logger
-
-logging.basicConfig(level=logging.WARNING)
 
 
 async def notify():

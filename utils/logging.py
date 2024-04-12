@@ -8,9 +8,15 @@ logger.add(f'{DIR}/logs/app.log', format='[{time}] [{level}] [{file.name}:{line}
            level='DEBUG', compression='zip')
 
 
-class NoParsingFilter(logging.Filter):
-    def filter(self, record):
-        return not record.getMessage().find('Failed to fetch updates') or not record.getMessage().find("Sleep for")
+def setup_logger(name: str) -> None:
+    class CustomFilter(logging.Filter):
+        def filter(self, record):
+            return "Failed to fetch updates" not in record.getMessage()
+
+    log = logging.getLogger(name)
+    log.addFilter(CustomFilter())
+    log.setLevel(logging.ERROR)
 
 
-logging.getLogger('app').addFilter(NoParsingFilter())
+setup_logger("aiogram")
+setup_logger("aiogram.dispatcher")
