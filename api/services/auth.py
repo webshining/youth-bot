@@ -5,26 +5,13 @@ from typing import NamedTuple
 
 import jwt
 from fastapi import Depends
-from fastapi import HTTPException, status
 from fastapi.security import OAuth2AuthorizationCodeBearer
 
 from data.config import TELEGRAM_BOT_TOKEN, ACCESS_TOKEN_EXPIRE_MINUTES, REFRESH_TOKEN_EXPIRE_MINUTES, \
     ACCESS_TOKEN_SECRET_KEY, REFRESH_TOKEN_SECRET_KEY
 from database.models import User
 from loader import redis
-
-not_enough_rights = HTTPException(
-    status_code=status.HTTP_403_FORBIDDEN,
-    detail='Not enough rights'
-)
-unauthorized = HTTPException(
-    status_code=status.HTTP_401_UNAUTHORIZED,
-    detail='Could not validate credentials',
-)
-notfound = HTTPException(
-    status_code=status.HTTP_404_NOT_FOUND,
-    detail='Not found'
-)
+from ..exceptions import unauthorized, not_enough_rights
 
 oauth2_scheme = OAuth2AuthorizationCodeBearer(tokenUrl='/api/auth/redirect', authorizationUrl='/api/auth')
 

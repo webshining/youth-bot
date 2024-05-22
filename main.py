@@ -16,18 +16,17 @@ async def notify():
     step = config.step
     users = (await Group.get(1)).users
     length = len(users)
-    for i in range(1, length + 1):
-        next_digit = (i + step - 1) % length + 1
-        first_user = users[i - 1].user
-        second_user = users[next_digit - 1].user
+    for i, user in enumerate(users):
+        next_digit = (i + step) % length
+        second_user = users[next_digit].user
         try:
-            await bot.send_message(chat_id=first_user.id,
-                                   text=_("This week you pray for <b>{}</b>", locale=first_user.lang).format(
-                                       f'<a href="t.me/{second_user.username}">{second_user.name}</a>'
+            await bot.send_message(chat_id=user.user.id,
+                                   text=_("This week you pray for <b>{}</b>", locale=user.user.lang).format(
+                                       f'<a href={f"t.me/{second_user.username}" if second_user.username else f"tg://user?id={second_user.id}"}>{second_user.name}</a>'
                                        if second_user.username else second_user.name))
         except Exception as e:
             logger.error(e)
-            logger.error(f"message-{second_user.name} for {first_user.id}-{first_user.name} was not sent")
+            logger.error(f"message-{second_user.name} for {user.user.id}-{user.user.name} was not sent")
         await asyncio.sleep(0.5)
     step = 1 if step + 1 >= length else step + 1
     await Config.update(1, step=step)

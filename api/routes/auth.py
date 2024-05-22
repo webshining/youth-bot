@@ -7,9 +7,8 @@ from fastapi.templating import Jinja2Templates
 from data.config import DIR, REFRESH_TOKEN_EXPIRE_MINUTES
 from database.models import User
 from loader import bot
-
-from ..services import (delete_token, generate_tokens, get_current_user,
-                        is_telegram, not_enough_rights, notfound, unauthorized)
+from ..exceptions import notfound, not_enough_rights, unauthorized
+from ..services import delete_token, generate_tokens, get_current_user, is_telegram
 
 router = APIRouter(prefix="/auth")
 templates = Jinja2Templates(directory=f"{DIR}/api/templates")
@@ -18,7 +17,8 @@ templates = Jinja2Templates(directory=f"{DIR}/api/templates")
 @router.get('/')
 async def _auth(request: Request, state: str = ""):
     return templates.TemplateResponse("auth.html", {"bot_username": (await bot.get_me()).username,
-                                                    "redirect": request.url_for("_auth_redirect").include_query_params(state=state), "request": request})
+                                                    "redirect": request.url_for("_auth_redirect").include_query_params(
+                                                        state=state), "request": request})
 
 
 @router.get('/redirect')
@@ -28,9 +28,9 @@ async def _auth_redirect(id: int, request: Request, state: str = ""):
 
         data = {}
         if not user:
-            data = json.dumps({"detail": notfound.detail})
+            data = json.dumps({"error": notfound.detail})
         if not user.is_admin() and not data:
-            data = json.dumps({"detail": not_enough_rights})
+            data = json.dumps({"error": not_enough_rights.detail})
         if data:
             return data if not state else RedirectResponse(f'{state}#{data}')
 
@@ -41,9 +41,8 @@ async def _auth_redirect(id: int, request: Request, state: str = ""):
                             httponly=True, samesite='none', secure=True)
         return response
     else:
-        data = json.dumps({"detail": unauthorized.detail})
-        return RedirectResponse(f'{state}#{data}') if state else {
-            "error": unauthorized.detail}
+        data = json.dumps({"error": unauthorized.detail})
+        return RedirectResponse(f'{state}#{data}') if state else {"error": unauthorized.detail}
 
 
 @router.get('/refresh')

@@ -4,7 +4,7 @@ from .auth import router as auth_router
 from .groups import router as groups_router
 from .users import router as users_router
 
-router = APIRouter()
+router = APIRouter(prefix="/api")
 
 
 @router.get("/ping")

@@ -25,8 +25,8 @@ class Song(BaseModel):
     id: int
     name: str
     artist: str
-    file: str or None = Field(None)
-    text: str or None = Field(None)
+    file: str | None = Field(None)
+    text: str | None = Field(None)
 
     def get_text(self, chords: bool = False) -> str | None:
         if not self.text: return None

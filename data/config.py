@@ -26,7 +26,6 @@ RD_PORT = env.int('RD_PORT', 6379)
 RD_URI = env.str('RD_URI', default=f"redis://{RD_HOST}:{RD_PORT}/{RD_DB}")
 
 FRONTEND_URL = env.str('FRONTEND_URL', 'http://localhost:3000')
-ROOT_PATH = env.str('ROOT_PATH', '/')
 ACCESS_TOKEN_SECRET_KEY = env.str('ACCESS_TOKEN_SECRET_KEY', 'accesssecretkey')
 ACCESS_TOKEN_EXPIRE_MINUTES = env.int('ACCESS_TOKEN_EXPIRE_MINUTES', 2)
 REFRESH_TOKEN_SECRET_KEY = env.str('REFRESH_TOKEN_SECRET_KEY', 'refreshsecretkey')

@@ -1,10 +1,10 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 
 from database.models import User
+from ..exceptions import notfound
+from ..models import UserUpdate
 
-from ..services import get_current_user, notfound
-
-router = APIRouter(prefix="/users", dependencies=[Depends(get_current_user)])
+router = APIRouter(prefix="/users")
 
 
 @router.get("/")
@@ -16,4 +16,15 @@ async def _users():
 @router.get("/{id}")
 async def _user(id: int):
     user = await User.get(id)
-    return user.model_dump() if user else {"error": notfound}
+    if not user:
+        raise notfound
+    return user.model_dump()
+
+
+@router.put("/{id}")
+async def _user_update(id: int, dto: UserUpdate):
+    user = await User.get(id)
+    if not user:
+        raise notfound
+    user = await User.update(id, **dto.model_dump())
+    return user.model_dump()

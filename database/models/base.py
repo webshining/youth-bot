@@ -53,8 +53,8 @@ class Base(BaseModel):
             del kwargs['id']
         if '_id' in kwargs:
             del kwargs['_id']
-        await cls._collection.find_one_and_update({'_id': id}, {'$set': kwargs})
-        return await cls.get(id)
+        obj = await cls._collection.find_one_and_update({'_id': id}, {'$set': kwargs}, return_document=True)
+        return cls(**obj)
 
     @classmethod
     async def create(cls, **kwargs):
