@@ -12,6 +12,6 @@ async def _ping():
     return {"message": "ok"}
 
 
-router.include_router(users_router)
-router.include_router(groups_router)
-router.include_router(auth_router)
+router.include_router(users_router, tags=['users'])
+router.include_router(groups_router, tags=['groups'])
+router.include_router(auth_router, tags=['auth'])

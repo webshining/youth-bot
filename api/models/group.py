@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 class GroupUser(BaseModel):
     user_id: int
     rules: Optional[list[str]] = Field([])
-    num: Optional[int] = Field(1)
 
 
 class GroupCreate(BaseModel):

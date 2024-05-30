@@ -1,14 +1,29 @@
-from fastapi import HTTPException, status
+from fastapi import status
 
-not_enough_rights = HTTPException(
+
+class ApiException(Exception):
+    def __init__(self, status_code: int, detail: str):
+        self.status_code = status_code
+        self.detail = detail
+
+
+notenoughrights = ApiException(
     status_code=status.HTTP_403_FORBIDDEN,
     detail='Not enough rights'
 )
-unauthorized = HTTPException(
+unauthorized = ApiException(
     status_code=status.HTTP_401_UNAUTHORIZED,
     detail='Could not validate credentials',
 )
-notfound = HTTPException(
+tokenexpired = ApiException(
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail='Token expired',
+)
+tokennotprovided = ApiException(
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail='No token provided',
+)
+notfound = ApiException(
     status_code=status.HTTP_404_NOT_FOUND,
     detail='Not found'
 )

@@ -1,20 +1,21 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
-from api.models import GroupUpdate
-from database.models import Group
+from database.models import Group, without_alias
 from ..exceptions import notfound
-from ..models.group import GroupCreate
+from ..models import GroupUpdate, GroupCreate
+from ..services import get_current_user_depends
 
-router = APIRouter(prefix="/groups")
+router = APIRouter(prefix="/groups", dependencies=[Depends(get_current_user_depends)])
+GroupWithoutAlias = without_alias(Group)
 
 
-@router.get("/")
+@router.get("/", tags=['get methods'], response_model=list[GroupWithoutAlias])
 async def _groups():
     groups = await Group.get_all()
     return [i.model_dump() for i in groups]
 
 
-@router.get("/{id}")
+@router.get("/{id}", tags=['get methods'], response_model=GroupWithoutAlias)
 async def _group(id: int):
     group = await Group.get(id)
     if not group:
@@ -22,13 +23,13 @@ async def _group(id: int):
     return group.model_dump()
 
 
-@router.post("/")
+@router.post("/", tags=['post methods'], response_model=GroupWithoutAlias)
 async def _group_create(dto: GroupCreate):
     group = await Group.create(**dto.model_dump())
     return group.model_dump()
 
 
-@router.put("/{id}")
+@router.put("/{id}", tags=['put methods'], response_model=GroupWithoutAlias)
 async def _group_update(id: int, dto: GroupUpdate):
     group = await Group.get(id)
     if not group:
@@ -39,11 +40,10 @@ async def _group_update(id: int, dto: GroupUpdate):
     if dto.removable is None:
         dto.removable = group.removable
 
-    group = await Group.update(id, **dto.model_dump())
-    return group.model_dump()
+    return await Group.update(id, **dto.model_dump())
 
 
-@router.delete("/{id}")
+@router.delete("/{id}", tags=['delete methods'])
 async def _group_delete(id: int):
     await Group.delete(id)
     return {"message": "Success"}

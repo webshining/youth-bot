@@ -1,27 +1,27 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
-from database.models import User
+from database.models import User, without_alias
 from ..exceptions import notfound
 from ..models import UserUpdate
+from ..services import get_current_user_depends
 
-router = APIRouter(prefix="/users")
+router = APIRouter(prefix="/users", dependencies=[Depends(get_current_user_depends)])
+UserWithoutAlias = without_alias(User)
 
 
-@router.get("/")
+@router.get("/", tags=['get methods'], response_model=list[UserWithoutAlias])
 async def _users():
-    users = await User.get_all()
-    return [i.model_dump() for i in users]
+    return await User.get_all()
 
 
-@router.get("/{id}")
+@router.get("/{id}", tags=['get methods'], response_model=UserWithoutAlias)
 async def _user(id: int):
-    user = await User.get(id)
-    if not user:
-        raise notfound
-    return user.model_dump()
+    if user := await User.get(id):
+        return user
+    raise notfound
 
 
-@router.put("/{id}")
+@router.put("/{id}", tags=['put methods'], response_model=UserWithoutAlias)
 async def _user_update(id: int, dto: UserUpdate):
     user = await User.get(id)
     if not user:
