@@ -20,8 +20,7 @@ class UserMiddleware(BaseMiddleware):
         else:
             from_user = event.inline_query.from_user
         user = await User.update_or_create(from_user.id, from_user.id, name=from_user.full_name,
-                                           username=from_user.username,
-                                           lang=from_user.language_code)
+                                           username=from_user.username)
         if user.status != "banned":
             data['user'] = user
             return await handler(event, data)

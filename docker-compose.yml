@@ -61,5 +61,4 @@ services:
 
 volumes:
   mydata:
-    external: true
   redis:
