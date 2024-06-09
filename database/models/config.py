@@ -4,7 +4,7 @@ from .base import Base
 
 
 class Config(Base):
-    id: int = Field(default_factory=int, alias="_id")
+    id: str
     step: int = Field(default=1)
 
 

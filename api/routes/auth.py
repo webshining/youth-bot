@@ -58,7 +58,7 @@ async def _refresh(request: Request):
         raise tokennotprovided
     user = await get_current_user(refresh_token, True)
     access_token, refresh_token = await generate_tokens({'id': user.id}, {'id': user.id})
-    response = JSONResponse({'user': user.model_dump(), 'accessToken': access_token})
+    response = JSONResponse({'user': user.model_dump(mode="json"), 'accessToken': access_token})
     set_cookie(response, refresh_token)
     return response
 

@@ -23,7 +23,7 @@ async def _groups_call(call: CallbackQuery, user: User):
     if call.data[7:] == 'refresh':
         text, markup = await _get_groups_data(user)
     else:
-        group = await Group.get(int(call.data[12:]))
+        group = await Group.get(call.data[12:])
         text, markup = await _get_group_data(group, user)
 
     try:
@@ -38,7 +38,7 @@ async def _group(call: CallbackQuery, state: FSMContext, user: User):
     if call.data[6:] == 'back':
         text, markup = await _get_groups_data(user)
     else:
-        if (group := await Group.get(int(call.data.split("_")[-1]))) is not None:
+        if (group := await Group.get(call.data.split("_")[-1])) is not None:
             if call.data[6:].startswith('delete'):
                 text, markup = (_("Do you really want to delete the group <b>{}</b>?").format(html.quote(group.name)),
                                 get_apply_markup("apply", "group", "delete", group.id))
@@ -64,7 +64,7 @@ async def _group(call: CallbackQuery, state: FSMContext, user: User):
 
 @router.callback_query(lambda call: call.data.startswith('apply_group'), GroupRoleFilter())
 async def _group_apply(call: CallbackQuery, state: FSMContext, user: User):
-    if (group := await Group.get(int(call.data.split('_')[-1]))) is not None:
+    if (group := await Group.get(call.data.split('_')[-1])) is not None:
         if call.data[12:].startswith('delete'):
             await Group.delete(group.id)
             text, markup = await _get_groups_data(user)
@@ -99,7 +99,7 @@ async def _group_apply(call: CallbackQuery, state: FSMContext, user: User):
 @router.message(GroupState.send_message)
 async def _group_send(message: Message, state: FSMContext, user: User):
     data = await state.get_data()
-    if (group_id := data.get('group_id')) is not None and await Group.get(int(group_id)):
+    if (group_id := data.get('group_id')) is not None and await Group.get(group_id):
         markup = get_apply_markup("apply", "group", "send", group_id)
         await message.copy_to(chat_id=message.chat.id, reply_markup=markup)
     else:
@@ -112,7 +112,7 @@ async def _group_send(message: Message, state: FSMContext, user: User):
 @router.message(GroupState.edit_name, F.text)
 async def _group_edit(message: Message, state: FSMContext, user: User):
     data = await state.get_data()
-    if (group_id := data.get('group_id')) is not None and (group := await Group.get(int(group_id))) is not None:
+    if (group_id := data.get('group_id')) is not None and (group := await Group.get(group_id)) is not None:
         text, markup = (
             _("Do you really want to change the group name from <b>{}</b> to <b>{}</b>?").format(html.quote(group.name),
                                                                                                  html.quote(

@@ -1,16 +1,21 @@
-x-env: &env
-  TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:?}
-  MONGO_HOST: ${MONGO_HOST:-mongo}
-  MONGO_PORT: ${MONGO_PORT:-27017}
-  MONGO_USER: ${MONGO_USER:-admin}
-  MONGO_PASS: ${MONGO_PASS:-admin}
+x-db-env: &dbenv
+  SURREAL_URL: ${SURREAL_URL:-ws://db:8000/rpc}
+  SURREAL_NS: ${SURREAL_NS:-bot}
+  SURREAL_DB: ${SURREAL_DB:-bot}
+  SURREAL_USER: ${SURREAL_USER:-root}
+  SURREAL_PASS: ${SURREAL_PASS:-root}
+
+x-redis-env: &redisenv
   RD_DB: ${RD_DB:-5}
   RD_HOST: ${RD_HOST:-redis}
   RD_PORT: ${RD_PORT:-6379}
 
-x-mongo-env: &mongoenv
-  MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-admin}
-  MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASS:-admin}
+x-env: &env
+  TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:?}
+
+  <<: [ *dbenv, *redisenv ]
+
+
 
 services:
   app:
@@ -18,32 +23,43 @@ services:
     restart: on-failure
     depends_on:
       - redis
-      - mongo
+      - db
     environment:
       <<: *env
     entrypoint:
       - ./bin/entrypoint.sh
     ports:
-      - "4400:4000"
+      - "4100:4000"
     volumes:
       - ./logs:/app/logs
   redis:
     image: redis:alpine
+    restart: always
     command: redis-server --appendonly yes
     environment:
       - REDIS_REPLICATION_MODE=master
     volumes:
       - redis:/data
-  mongo:
-    image: mongo
+  db:
+    image: surrealdb/surrealdb:latest
     restart: always
-    volumes:
-      - mongo_db:/data/db
-    ports:
-      - "27017:27017"
+    user: root
     environment:
-      <<: *mongoenv
+      <<: *dbenv
+    entrypoint:
+      - /surreal
+      - start
+      - --user
+      - ${SURREAL_USER}
+      - --pass
+      - ${SURREAL_PASS}
+      - file:/mydata/mydatabase.db
+    ports:
+      - "8100:8000"
+    volumes:
+      - mydata:/mydata
 
 volumes:
-  mongo_db:
+  mydata:
+    external: true
   redis:

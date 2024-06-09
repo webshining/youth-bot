@@ -1,111 +1,109 @@
-from copy import deepcopy
-from typing import get_origin, get_args
+from contextlib import asynccontextmanager
+from datetime import datetime, timezone
 
-from bson.objectid import ObjectId as BsonObjectId
-from motor.motor_tornado import MotorCollection
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, Field, field_validator
+from surrealdb import Surreal
 
-from loader import db
-
-
-class ObjectId(BsonObjectId):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def validate(cls, v):
-        if not isinstance(v, BsonObjectId):
-            raise TypeError('ObjectId required')
-        return str(v)
+from data.config import SURREAL_URL, SURREAL_USER, SURREAL_PASS, SURREAL_DB, SURREAL_NS
 
 
-class Base(BaseModel):
-    _collection: MotorCollection = None
+@asynccontextmanager
+async def get_session():
+    async with Surreal(SURREAL_URL) as session:
+        await session.signin({"user": SURREAL_USER, "pass": SURREAL_PASS})
+        await session.use(SURREAL_NS, SURREAL_DB)
+        yield session
 
-    @classmethod
-    async def count(cls):
-        num = await cls._collection.count_documents({})
-        return num
 
-    @classmethod
-    async def nextid(cls):
-        obj = await cls._collection.find().limit(1).sort({"$natural": -1}).to_list(1)
-        return int(obj[0]['_id']) + 1 if obj else 1
+def convert_datetime_to_iso_8601_with_z_suffix(dt: datetime) -> str:
+    dt.isoformat()
+    return dt.strftime('%Y-%m-%dT%H:%M:%SZ')
 
-    @classmethod
-    async def get(cls, id: int):
-        obj = await cls._collection.find_one({'_id': id})
+
+def execute(func) -> None:
+    async def wrapper(*args, **kwargs):
+        if not "session" in kwargs:
+            async with get_session() as session:
+                kwargs["session"] = session
+                return await func(*args, **kwargs)
+
+        return await func(*args, **kwargs)
+
+    return classmethod(wrapper)
+
+
+class BaseMeta(type(BaseModel)):
+    def __new__(cls, name, bases, namespace, **kwargs):
+        annotations = namespace['__annotations__']
+        if "id" in annotations:
+            namespace['id'] = Field(default=0 if annotations['id'] == int else "0")
+        return super().__new__(cls, name, bases, namespace, **kwargs)
+
+
+class Base(BaseModel, metaclass=BaseMeta):
+    _table: str
+
+    id: str | int
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+    @execute
+    async def get(cls, id: str | int, session=None, **kwargs):
+        obj = await session.select(f"{cls._table}:{id}")
         return cls(**obj) if obj else None
 
-    @classmethod
-    async def get_by(cls, **kwargs):
-        if 'id' in kwargs:
-            kwargs['_id'] = kwargs.pop('id')
-        obj = await cls._collection.find_one(kwargs)
-        return cls(**obj) if obj else None
+    @execute
+    async def get_all(cls, session=None, **kwargs):
+        objs = await session.select(cls._table)
+        return [cls(**o) for o in objs]
 
-    @classmethod
-    async def get_all(cls):
-        objs = await cls._collection.find().to_list(10000)
-        return [cls(**u) for u in objs]
+    @execute
+    async def get_or_create(cls, id: str | int, generate: int | str = None, session=None, **kwargs):
+        if obj := await cls.get(id, session=session):
+            return obj
+        else:
+            return await cls.create(generate, session=session, **kwargs)
 
-    @classmethod
-    async def update(cls, id: int, **kwargs):
-        if 'id' in kwargs:
-            del kwargs['id']
-        if '_id' in kwargs:
-            del kwargs['_id']
-        await cls._collection.find_one_and_update({'_id': id}, {'$set': kwargs}, return_document=True)
-        return await cls.get(id)
+    @execute
+    async def create(cls, generate: int | str = None, session=None, **kwargs):
+        id = f"{cls._table}:{generate}" if generate else cls._table
+        kwargs = cls(**kwargs).model_dump(mode="json", exclude={"id"})
+        obj = await session.create(id, kwargs)
+        if not generate:
+            obj = obj[0]
+        return cls(**obj)
 
-    @classmethod
-    async def create(cls, **kwargs):
-        if '_id' not in kwargs:
-            kwargs["_id"] = await cls.nextid()
-        obj = cls(**kwargs)
-        obj = await cls._collection.insert_one(obj.model_dump(by_alias=True))
-        return await cls.get(obj.inserted_id)
+    @execute
+    async def update(cls, id: str, session=None, **kwargs):
+        kwargs['updated_at'] = convert_datetime_to_iso_8601_with_z_suffix(datetime.now(timezone.utc))
+        await session.query(f'UPDATE {cls._table}:{id} MERGE {kwargs} WHERE id')
+        return await cls.get(id=id, session=session)
 
-    @classmethod
-    async def delete(cls, id: int):
-        await cls._collection.find_one_and_delete({'_id': id})
+    @execute
+    async def update_or_create(cls, id: str | int, generate: int | str = None, session=None, **kwargs):
+        if user := await cls.update(id, **kwargs):
+            return user
+        else:
+            return await cls.create(generate, session=session, **kwargs)
+
+    @execute
+    async def delete(cls, id: str, session=None):
+        await session.delete(f'{cls._table}:{id}')
         return True
 
     @classmethod
     def set_collection(cls, collection: str):
-        cls._collection = db[collection]
+        cls._table = collection
 
+    @field_validator("id", mode="before", check_fields=False)
+    def parse_id(cls, v: str):
+        if isinstance(v, int) or v.isnumeric():
+            return v
+        id = v.split(":")[1]
+        if isinstance(cls.__annotations__['id'], int):
+            return int(id)
+        return id
 
-def without_alias(model):
-    model = deepcopy(model)
-
-    new_fields = {}
-    new_annotations = {}
-    for name, field in model.__fields__.items():
-        field_type = field.annotation
-        origin_type = get_origin(field_type)
-        if origin_type is None and issubclass(field_type, BaseModel):
-            new_fields[name] = without_alias(field_type)
-            new_annotations[name] = new_fields[name]
-        elif origin_type:
-            sub_field = get_args(field_type)[0]
-            if issubclass(sub_field, BaseModel):
-                new_fields[name] = origin_type[without_alias(sub_field)]
-                new_annotations[name] = new_fields[name]
-        if name not in new_fields:
-            if field.alias != name:
-                field.alias = name
-                field.validation_alias = name
-                field.serialization_alias = name
-                field.alias_priority = 1
-            new_fields[name] = field
-            new_annotations[name] = field_type
-
-    model = type(f"{model.__name__}WithoutAliases", (BaseModel,), {
-        "__fields__": new_fields,
-        '__annotations__': new_annotations,
-        '__module__': model.__module__,
+    model_config = ConfigDict(json_encoders={
+        datetime: convert_datetime_to_iso_8601_with_z_suffix
     })
-
-    return model

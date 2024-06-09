@@ -8,7 +8,7 @@ apscheduler
 # REST API
 fastapi
 uvicorn
-gunicorn
+hypercorn
 jinja2
 pyjwt
 
@@ -16,7 +16,6 @@ requests-html
 lxml[html_clean]
 
 # Database & storage
-motor
-tornado
+surrealdb
 pydantic
 redis

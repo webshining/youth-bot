@@ -24,7 +24,7 @@ WORKDIR /app
 
 ENV PATH="/opt/venv/bin:$PATH"
 
-COPY . .
+COPY .. .
 
 RUN chmod +x ./bin/entrypoint.sh
 

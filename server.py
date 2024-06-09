@@ -1,4 +1,3 @@
-import uvicorn
 from fastapi import FastAPI, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
@@ -41,7 +40,3 @@ async def api_exception_handler(request: Request, exc: ApiException):
     if request.url.path == "/api/auth/refresh" and exc in [unauthorized, tokenexpired]:
         response.delete_cookie(key='refreshToken', secure=True, httponly=True, samesite='none')
     return response
-
-
-if __name__ == "__main__":
-    uvicorn.run("server:app", host="0.0.0.0", port=80)

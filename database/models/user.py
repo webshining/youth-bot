@@ -13,18 +13,18 @@ class Status(Enum):
 
 
 class User(Base):
-    id: int = Field(default_factory=int, alias="_id")
+    id: int
     name: str
     username: str | None = Field(default=None)
     status: str = Field(default="user")
-    lang: str
-    notifications: bool = Field(True)
+    lang: str = Field(default="en")
+    notifications: bool = Field(default=True)
 
     _status: Status = Status
 
     def is_admin(self, super: bool = False) -> bool:
         if super:
-            return self.status in ("super_admin",)
+            return self.status == "super_admin"
         return self.status in ("admin", "super_admin")
 
     def statuses_to_edit(self, status: str) -> list[str]:
@@ -32,20 +32,5 @@ class User(Base):
         status = getattr(self._status, status).value
         return [] if status >= self_status else [i.name for i in self._status if i.value < self_status]
 
-    @classmethod
-    async def get_or_create(cls, id: int, name: str, username: str | None, lang: str):
-        user = await cls.get(id)
-        data = {"username": username, 'name': name}
-        if not user:
-            data['_id'] = id
-            data['lang'] = lang
-        user = await cls.update(user.id, **data) if user else await cls.create(**data)
-        return user
 
-    @classmethod
-    async def get_by_name(cls, name: str):
-        users = await cls._collection.find({"$text": {"$search": name}}).to_list(length=10000)
-        return [cls(**i) for i in users]
-
-
-User.set_collection('users')
+User.set_collection('user')

@@ -23,11 +23,12 @@ def get_groups_markup(groups: list[Group], user: User) -> InlineKeyboardMarkup:
 def get_group_markup(group: Group, user: User) -> InlineKeyboardMarkup:
     buttons = []
     rules = group.rules(user)
-    if "delete" in rules and group.removable:
-        buttons.append(InlineKeyboardButton(text=_("❌ Delete"), callback_data=f'group_delete_{group.id}'))
+
+    buttons.append(InlineKeyboardButton(text=_("✍️ Send message"), callback_data=f'group_send_{group.id}'))
     if "edit" in rules:
         buttons.append(InlineKeyboardButton(text=_("✏️ Edit"), callback_data=f'group_edit_{group.id}'))
-    buttons.append(InlineKeyboardButton(text=_("✍️ Send message"), callback_data=f'group_send_{group.id}'))
+    if "delete" in rules and group.removable:
+        buttons.append(InlineKeyboardButton(text=_("❌ Delete"), callback_data=f'group_delete_{group.id}'))
 
     builder = InlineKeyboardBuilder()
     builder.add(*buttons)

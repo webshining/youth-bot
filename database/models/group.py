@@ -1,30 +1,17 @@
 from pydantic import Field, BaseModel
 
-from .base import Base
+from .base import Base, execute
 from .user import User
 
 
 class GroupUser(BaseModel):
     user: User
-    rules: list[str] = Field(default=[""])
+    rules: list[str] = Field(default=[])
     num: int
 
 
-_aggregate_params: list[dict] = [
-    {"$unwind": {"path": "$users", "preserveNullAndEmptyArrays": True}},
-    {"$lookup": {"from": "users", "localField": "users.user_id", "foreignField": "_id", "as": "users.user"}},
-    {"$unwind": {"path": "$users.user", "preserveNullAndEmptyArrays": True}},
-    {"$group": {"_id": "$_id", "name": {"$first": "$name"}, "users": {"$push": "$users"},
-                "removable": {"$first": "$removable"}}},
-    {"$project": {"removable": "$removable", "name": "$name",
-                  "users": {"$sortArray": {
-                      "input": {"$cond": {"if": {"$eq": ["$users", [{}]]}, "then": [], "else": "$users"}},
-                      "sortBy": {"num": 1}}}}},
-]
-
-
 class Group(Base):
-    id: int = Field(default_factory=int, alias="_id")
+    id: str
     name: str
     users: list[GroupUser] = Field(default=[])
     removable: bool = Field(default=True)
@@ -39,20 +26,21 @@ class Group(Base):
             return []
         return _user.rules
 
-    @classmethod
-    async def get(cls, id: int):
-        obj = await cls._collection.aggregate([
-            {"$match": {"_id": id}},
-            *_aggregate_params
-        ]).to_list(length=1)
-        return cls(**obj[0]) if obj else None
+    @execute
+    async def get(cls, id: int | str, session=None):
+        query = await session.query(f"SELECT * FROM {cls._table}:{id} FETCH users.user")
+        obj = next(iter(query[0]['result']), None)
+        obj = cls(**obj) if obj else obj
+        if obj:
+            obj.users = sorted(obj.users, key=lambda u: u.num)
+        return obj
 
-    @classmethod
-    async def get_all(cls):
-        objs = await cls._collection.aggregate([
-            *_aggregate_params
-        ]).to_list(length=1000)
-        return [cls(**u) for u in objs]
+    @execute
+    async def get_all(cls, session=None):
+        objs = await session.select(cls._table)
+        for o in objs:
+            o['users'] = []
+        return [cls(**o) for o in objs]
 
 
-Group.set_collection('groups')
+Group.set_collection('group')

@@ -1,35 +1,33 @@
 from fastapi import APIRouter, Depends
 
-from database.models import Group, without_alias
+from database.models import Group
 from ..exceptions import notfound
 from ..models import GroupUpdate, GroupCreate
 from ..services import get_current_user_depends
 
 router = APIRouter(prefix="/groups", dependencies=[Depends(get_current_user_depends)])
-GroupWithoutAlias = without_alias(Group)
 
 
-@router.get("/", tags=['get methods'], response_model=list[GroupWithoutAlias])
+@router.get("/", tags=['get methods'], response_model=list[Group])
 async def _groups():
-    groups = await Group.get_all()
-    return [i.model_dump() for i in groups]
+    return await Group.get_all()
 
 
-@router.get("/{id}", tags=['get methods'], response_model=GroupWithoutAlias)
+@router.get("/{id}", tags=['get methods'], response_model=Group)
 async def _group(id: int):
     group = await Group.get(id)
     if not group:
         raise notfound
-    return group.model_dump()
+    return group
 
 
-@router.post("/", tags=['post methods'], response_model=GroupWithoutAlias)
+@router.post("/", tags=['post methods'], response_model=Group)
 async def _group_create(dto: GroupCreate):
     group = await Group.create(**dto.model_dump())
-    return group.model_dump()
+    return group
 
 
-@router.put("/{id}", tags=['put methods'], response_model=GroupWithoutAlias)
+@router.put("/{id}", tags=['put methods'], response_model=Group)
 async def _group_update(id: int, dto: GroupUpdate):
     group = await Group.get(id)
     if not group:

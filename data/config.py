@@ -1,4 +1,3 @@
-import urllib.parse
 from pathlib import Path
 
 from environs import Env
@@ -10,14 +9,11 @@ DIR = Path(__file__).absolute().parent.parent
 
 TELEGRAM_BOT_TOKEN = env.str('TELEGRAM_BOT_TOKEN')
 
-MONGO_HOST = env.str("MONGO_HOST", "localhost")
-MONGO_PORT = env.int("MONGO_PORT", 27017)
-MONGO_USER = env.str("MONGO_USER", None)
-MONGO_PASS = env.str("MONGO_PASS", None)
-
-MONGO_URL = env.str('MONGO_URL', f"mongodb://{MONGO_HOST}:{MONGO_PORT}/")
-if MONGO_PASS and MONGO_USER:
-    MONGO_URL = f'mongodb://{urllib.parse.quote(MONGO_USER)}:{urllib.parse.quote(MONGO_PASS)}@{MONGO_HOST}:{MONGO_PORT}'
+SURREAL_URL = env.str('SURREAL_URL', 'ws://localhost:8000/rpc')
+SURREAL_NS = env.str('SURREAL_NS', 'test')
+SURREAL_DB = env.str('SURREAL_DB', 'test')
+SURREAL_USER = env.str('SURREAL_USER', 'root')
+SURREAL_PASS = env.str('SURREAL_PASS', 'root')
 
 RD_DB = env.int('RD_DB', 5)
 RD_HOST = env.str('RD_HOST', "localhost")

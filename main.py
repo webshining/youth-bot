@@ -14,7 +14,7 @@ from utils import logger
 async def notify():
     config = await Config.get(1)
     step = config.step
-    users = (await Group.get(1)).users
+    users = (await Group.get('yyebz5ifbudmd8wq0a8t')).users
     length = len(users)
     for i, user in enumerate(users):
         next_digit = (i + step) % length
@@ -34,11 +34,11 @@ async def notify():
 
 async def on_startup() -> None:
     if not await Config.get(1):
-        await Config.create()
-    await set_default_commands()
+        await Config.create(1)
     scheduler = AsyncIOScheduler()
     scheduler.add_job(notify, trigger=CronTrigger(day_of_week="sun", hour=20, timezone="Europe/Kyiv"))
     scheduler.start()
+    await set_default_commands()
     logger.info("Bot started!")
 
 
