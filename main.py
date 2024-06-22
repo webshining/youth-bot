@@ -1,5 +1,6 @@
 import asyncio
 
+from aiogram import html
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 
@@ -19,14 +20,15 @@ async def notify():
     for i, user in enumerate(users):
         next_digit = (i + step) % length
         second_user = users[next_digit].user
+        text = _("This week you pray for <b>{}</b>", locale=user.user.lang).format(
+               f'<a href="{f"t.me/{second_user.username}" if second_user.username else f"tg://user?id={second_user.id}"}">{html.quote(second_user.name)}</a>')
         try:
-            await bot.send_message(chat_id=user.user.id,
-                                   text=_("This week you pray for <b>{}</b>", locale=user.user.lang).format(
-                                       f'<a href={f"t.me/{second_user.username}" if second_user.username else f"tg://user?id={second_user.id}"}>{second_user.name}</a>'
-                                       if second_user.username else second_user.name))
+            await bot.send_message(chat_id=user.user.id, text=text)
+            
+            logger.info(f"message for {user.user.id} was sent successfuly")
         except Exception as e:
             logger.error(e)
-            logger.error(f"message-{second_user.name} for {user.user.id}-{user.user.name} was not sent")
+            logger.exception(f"message - {text} for {user.user.id} was not sent")
         await asyncio.sleep(0.5)
     step = 1 if step + 1 >= length else step + 1
     await Config.update(1, step=step)

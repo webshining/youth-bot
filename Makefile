@@ -6,6 +6,8 @@ SURREAL_PASS := $(or $(SURREAL_PASS),root)
 SURREAL_NS := $(or $(SURREAL_NS),bot)
 SURREAL_DB := $(or $(SURREAL_DB),bot)
 
+.PHONY: logs
+
 bot:
 	python main.py
 server:
@@ -29,4 +31,4 @@ db_export:
 	docker compose cp db:/export.surql ./
 db_import:
 	docker compose cp ./export.surql db:/export.surql && \
-	docker compose exec db //surreal import --conn http://localhost:8000 --user $(SURREAL_USER) --pass $(SURREAL_PASS) --ns $(SURREAL_NS) --db $(SURREAL_DB) export.surql
+	docker compose exec db /surreal import --conn http://localhost:8000 --user $(SURREAL_USER) --pass $(SURREAL_PASS) --ns $(SURREAL_NS) --db $(SURREAL_DB) export.surql

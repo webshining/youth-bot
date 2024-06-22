@@ -1,17 +1,19 @@
 from aiogram import Dispatcher
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
-from aiogram.types import Message
+from aiogram.types import ErrorEvent, Message
 
 from app.filters import AdminFilter
+from utils import logger
+
 from .admins import admin_router, super_admin_router
 from .users import router as user_router
 
 
 def setup_handlers(dp: Dispatcher) -> None:
-    # @dp.errors()
-    # async def _error(event: ErrorEvent):
-    #     logger.error(event.exception)
+    @dp.error()
+    async def _error(event: ErrorEvent):
+        logger.exception(event.exception)
 
     @dp.message(Command('cancel'))
     async def _cancel(message: Message, state: FSMContext):
