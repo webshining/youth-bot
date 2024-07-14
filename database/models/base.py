@@ -4,20 +4,21 @@ from datetime import datetime, timezone
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 from surrealdb import Surreal
 
-from data.config import SURREAL_URL, SURREAL_USER, SURREAL_PASS, SURREAL_DB, SURREAL_NS
+from data.config import SURREAL_DB, SURREAL_NS, SURREAL_PASS, SURREAL_URL, SURREAL_USER
 
 
 @asynccontextmanager
 async def get_session():
     async with Surreal(SURREAL_URL) as session:
-        await session.signin({"user": SURREAL_USER, "pass": SURREAL_PASS})
+        if SURREAL_PASS and SURREAL_USER:
+            await session.signin({"user": SURREAL_USER, "pass": SURREAL_PASS})
         await session.use(SURREAL_NS, SURREAL_DB)
         yield session
 
 
 def convert_datetime_to_iso_8601_with_z_suffix(dt: datetime) -> str:
     dt.isoformat()
-    return dt.strftime('%Y-%m-%dT%H:%M:%SZ')
+    return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def execute(func) -> None:
@@ -34,9 +35,9 @@ def execute(func) -> None:
 
 class BaseMeta(type(BaseModel)):
     def __new__(cls, name, bases, namespace, **kwargs):
-        annotations = namespace['__annotations__']
+        annotations = namespace["__annotations__"]
         if "id" in annotations:
-            namespace['id'] = Field(default=0 if annotations['id'] == int else "0")
+            namespace["id"] = Field(default=0 if annotations["id"] == int else "0")
         return super().__new__(cls, name, bases, namespace, **kwargs)
 
 
@@ -58,7 +59,9 @@ class Base(BaseModel, metaclass=BaseMeta):
         return [cls(**o) for o in objs]
 
     @execute
-    async def get_or_create(cls, id: str | int, generate: int | str = None, session=None, **kwargs):
+    async def get_or_create(
+        cls, id: str | int, generate: int | str = None, session=None, **kwargs
+    ):
         if obj := await cls.get(id, session=session):
             return obj
         else:
@@ -75,12 +78,16 @@ class Base(BaseModel, metaclass=BaseMeta):
 
     @execute
     async def update(cls, id: str, session=None, **kwargs):
-        kwargs['updated_at'] = convert_datetime_to_iso_8601_with_z_suffix(datetime.now(timezone.utc))
-        await session.query(f'UPDATE {cls._table}:{id} MERGE {kwargs} WHERE id')
+        kwargs["updated_at"] = convert_datetime_to_iso_8601_with_z_suffix(
+            datetime.now(timezone.utc)
+        )
+        await session.query(f"UPDATE {cls._table}:{id} MERGE {kwargs} WHERE id")
         return await cls.get(id=id, session=session)
 
     @execute
-    async def update_or_create(cls, id: str | int, generate: int | str = None, session=None, **kwargs):
+    async def update_or_create(
+        cls, id: str | int, generate: int | str = None, session=None, **kwargs
+    ):
         if user := await cls.update(id, **kwargs):
             return user
         else:
@@ -88,7 +95,7 @@ class Base(BaseModel, metaclass=BaseMeta):
 
     @execute
     async def delete(cls, id: str, session=None):
-        await session.delete(f'{cls._table}:{id}')
+        await session.delete(f"{cls._table}:{id}")
         return True
 
     @classmethod
@@ -100,10 +107,10 @@ class Base(BaseModel, metaclass=BaseMeta):
         if isinstance(v, int) or v.isnumeric():
             return v
         id = v.split(":")[1]
-        if isinstance(cls.__annotations__['id'], int):
+        if isinstance(cls.__annotations__["id"], int):
             return int(id)
         return id
 
-    model_config = ConfigDict(json_encoders={
-        datetime: convert_datetime_to_iso_8601_with_z_suffix
-    })
+    model_config = ConfigDict(
+        json_encoders={datetime: convert_datetime_to_iso_8601_with_z_suffix}
+    )

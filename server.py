@@ -5,10 +5,10 @@ from fastapi.responses import JSONResponse
 from starlette.middleware.cors import CORSMiddleware
 
 from api import router as api_router
-from api.exceptions import unauthorized, tokenexpired, ApiException
+from api.exceptions import ApiException, tokenexpired, unauthorized
 
 tags_metadata = [
-    {'name': "default"},
+    {"name": "default"},
     {"name": "users"},
     {"name": "groups"},
     {"name": "auth"},
@@ -20,7 +20,9 @@ tags_metadata = [
 app = FastAPI(openapi_tags=tags_metadata)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://127.0.0.1:3000", "http://localhost:3000"],
+    allow_origins=[
+        "http://127.0.0.1:3000",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -30,13 +32,17 @@ app.include_router(api_router)
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
-    return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST,
-                        content=jsonable_encoder({"detail": exc.errors()[0]['msg']}))
+    return JSONResponse(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        content=jsonable_encoder({"detail": exc.errors()[0]["msg"]}),
+    )
 
 
 @app.exception_handler(ApiException)
 async def api_exception_handler(request: Request, exc: ApiException):
     response = JSONResponse(status_code=exc.status_code, content={"detail": exc.detail})
     if request.url.path == "/api/auth/refresh" and exc in [unauthorized, tokenexpired]:
-        response.delete_cookie(key='refreshToken', secure=True, httponly=True, samesite='none')
+        response.delete_cookie(
+            key="refreshToken", secure=True, httponly=True, samesite="none"
+        )
     return response
